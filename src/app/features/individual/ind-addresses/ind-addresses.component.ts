@@ -6,11 +6,12 @@ import { ToastService } from '../../../core/services/toast.service';
 import { DtoAddress, DtoAddressRequest } from '../../../shared/models/address';
 import { catchError } from 'rxjs/operators';
 import { of } from 'rxjs';
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-ind-addresses',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, TranslateModule],
   templateUrl: './ind-addresses.component.html',
   styleUrl: './ind-addresses.component.css'
 })

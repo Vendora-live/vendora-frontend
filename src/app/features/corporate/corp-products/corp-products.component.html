@@ -3,33 +3,31 @@
   <!-- Page Header -->
   <div class="prod-header">
     <div class="prod-header-left">
-      <h2>Product Management</h2>
-      <p>Add, edit and manage your store's product catalogue.</p>
+      <h2>{{ 'CORP_PRODUCTS.title' | translate }}</h2>
+      <p>{{ 'CORP_PRODUCTS.subtitle' | translate }}</p>
     </div>
     <div class="prod-header-right">
       <button class="btn-new-product" (click)="openProductModal()" [disabled]="!selectedStoreId">
-        ＋ New Product
+        {{ 'CORP_PRODUCTS.newProduct' | translate }}
       </button>
     </div>
   </div>
 
-  <!-- Alerts -->
-
   <div *ngIf="!isLoading && selectedStoreId && products.length === 0" class="alert-info">
-    ℹ️ No products in this store yet. Click <strong>New Product</strong> to add one.
+    ℹ️ {{ 'CORP_PRODUCTS.noProducts' | translate }}
   </div>
 
   <!-- Loading -->
   <div *ngIf="isLoading" class="loading-state">
     <div class="spinner"></div>
-    <p>Loading products...</p>
+    <p>{{ 'CORP_PRODUCTS.loading' | translate }}</p>
   </div>
 
   <!-- Product Cards Grid -->
   <div class="product-grid" *ngIf="!isLoading && products.length > 0">
     <div class="product-card" *ngFor="let product of products">
       <div class="card-image">
-        <img [src]="getImageUrl(product.imageUrl)" [alt]="product.name" />
+        <img [src]="getPrimaryImage(product)" [alt]="product.name" />
         <span class="stock-pill"
           [ngClass]="{
             'ok':       product.stockQuantity > 10,
@@ -37,15 +35,15 @@
             'critical': product.stockQuantity > 0 && product.stockQuantity <= 5,
             'empty':    product.stockQuantity === 0
           }">
-          <ng-container *ngIf="product.stockQuantity === 0">Out of Stock</ng-container>
-          <ng-container *ngIf="product.stockQuantity > 0 && product.stockQuantity <= 5">🔥 Only {{ product.stockQuantity }} left!</ng-container>
-          <ng-container *ngIf="product.stockQuantity > 5 && product.stockQuantity <= 10">{{ product.stockQuantity }} left</ng-container>
-          <ng-container *ngIf="product.stockQuantity > 10">In Stock</ng-container>
+          <ng-container *ngIf="product.stockQuantity === 0">{{ 'CORP_PRODUCTS.outOfStock' | translate }}</ng-container>
+          <ng-container *ngIf="product.stockQuantity > 0 && product.stockQuantity <= 5">🔥 {{ 'CORP_PRODUCTS.onlyLeft' | translate: {count: product.stockQuantity} }}</ng-container>
+          <ng-container *ngIf="product.stockQuantity > 5 && product.stockQuantity <= 10">{{ 'CORP_PRODUCTS.left' | translate: {count: product.stockQuantity} }}</ng-container>
+          <ng-container *ngIf="product.stockQuantity > 10">{{ 'CORP_PRODUCTS.inStock' | translate }}</ng-container>
         </span>
       </div>
       <div class="card-body">
         <div class="card-top">
-          <span class="cat-badge">{{ product.categoryName || 'Uncategorized' }}</span>
+          <span class="cat-badge">{{ product.categoryName || ('CORP_PRODUCTS.uncategorized' | translate) }}</span>
           <span class="sku-badge">{{ product.sku }}</span>
         </div>
         <h3 class="card-title">{{ product.name }}</h3>
@@ -53,8 +51,8 @@
         <div class="card-footer">
           <span class="card-price">{{ product.unitPrice | currency:'TRY':'₺':'1.2-2' }}</span>
           <div class="card-actions">
-            <button class="btn-icon edit" title="Edit" (click)="openProductModal(product)">✏️</button>
-            <button class="btn-icon delete" title="Delete" (click)="deleteProduct(product.id)">🗑️</button>
+            <button class="btn-icon edit" [title]="'COMMON.edit' | translate" (click)="openProductModal(product)">✏️</button>
+            <button class="btn-icon delete" [title]="'COMMON.delete' | translate" (click)="deleteProduct(product.id)">🗑️</button>
           </div>
         </div>
       </div>
@@ -63,15 +61,15 @@
 
   <!-- Pagination -->
   <div class="pagination-controls" *ngIf="totalPages >= 0 && !isLoading">
-      <button class="btn-page" (click)="prevPage()" [disabled]="pageNumber === 0">← Previous</button>
-      <span class="page-info">Page {{ pageNumber + 1 }} of {{ totalPages }}</span>
-      <button class="btn-page" (click)="nextPage()" [disabled]="pageNumber >= totalPages - 1">Next →</button>
-  
-        <div class="jump-to-page">
-            <input type="number" #pageInput min="1" [max]="totalPages" placeholder="Go to..." (keyup.enter)="goToPage(pageInput.value)" class="page-input">
-            <button class="btn-page" (click)="goToPage(pageInput.value)">Go</button>
-        </div>
-    </div>
+      <button class="btn-page" (click)="prevPage()" [disabled]="pageNumber === 0">{{ 'COMMON.prevPage' | translate }}</button>
+      <span class="page-info">{{ 'COMMON.pagination' | translate: {current: pageNumber + 1, total: totalPages} }}</span>
+      <button class="btn-page" (click)="nextPage()" [disabled]="pageNumber >= totalPages - 1">{{ 'COMMON.nextPage' | translate }}</button>
+
+      <div class="jump-to-page">
+          <input type="number" #pageInput min="1" [max]="totalPages" [placeholder]="'COMMON.goToPage' | translate" (keyup.enter)="goToPage(pageInput.value)" class="page-input">
+          <button class="btn-page" (click)="goToPage(pageInput.value)">{{ 'COMMON.goTo' | translate }}</button>
+      </div>
+  </div>
 
 </div>
 
@@ -80,7 +78,7 @@
   <div class="modal-box" (click)="$event.stopPropagation()">
 
     <div class="modal-header">
-      <h5>{{ editingProductId ? 'Edit Product' : 'Add New Product' }}</h5>
+      <h5>{{ editingProductId ? ('CORP_PRODUCTS.editTitle' | translate) : ('CORP_PRODUCTS.addTitle' | translate) }}</h5>
       <button class="modal-close" (click)="closeProductModal()" aria-label="Close">✕</button>
     </div>
 
@@ -89,50 +87,85 @@
 
         <div class="form-row">
           <div class="form-group">
-            <label class="form-label-text">Product Name *</label>
-            <input type="text" class="form-input" formControlName="name" placeholder="e.g. Minimalist Vase">
+            <label class="form-label-text">{{ 'CORP_PRODUCTS.name' | translate }}</label>
+            <input type="text" class="form-input" formControlName="name" [placeholder]="'CORP_PRODUCTS.namePlaceholder' | translate">
           </div>
           <div class="form-group">
-            <label class="form-label-text">SKU *</label>
-            <input type="text" class="form-input" formControlName="sku" placeholder="e.g. VZ-1001">
+            <label class="form-label-text">{{ 'CORP_PRODUCTS.sku' | translate }}</label>
+            <input type="text" class="form-input" formControlName="sku" [placeholder]="'CORP_PRODUCTS.skuPlaceholder' | translate">
           </div>
         </div>
 
         <div class="form-group">
-          <label class="form-label-text">Description *</label>
+          <label class="form-label-text">{{ 'CORP_PRODUCTS.description' | translate }}</label>
           <textarea class="form-textarea" rows="3" formControlName="description"
-            placeholder="Describe the product features..."></textarea>
+            [placeholder]="'CORP_PRODUCTS.descriptionPlaceholder' | translate"></textarea>
         </div>
 
         <div class="form-row">
           <div class="form-group">
-            <label class="form-label-text">Unit Price (₺) *</label>
+            <label class="form-label-text">{{ 'CORP_PRODUCTS.price' | translate }}</label>
             <input type="number" step="0.01" class="form-input" formControlName="unitPrice" placeholder="0.00">
           </div>
           <div class="form-group">
-            <label class="form-label-text">Stock Quantity *</label>
+            <label class="form-label-text">{{ 'CORP_PRODUCTS.stock' | translate }}</label>
             <input type="number" class="form-input" formControlName="stockQuantity" placeholder="0">
           </div>
         </div>
 
-        <div class="form-row">
-          <div class="form-group">
-            <label class="form-label-text">Category *</label>
-            <select class="form-select" formControlName="categoryId">
-              <option [ngValue]="null" disabled>Select Category</option>
-              <option *ngFor="let cat of categories" [value]="cat.id">{{ cat.name }}</option>
-            </select>
+        <div class="form-group">
+          <label class="form-label-text">{{ 'CORP_PRODUCTS.category' | translate }}</label>
+          <select class="form-select" formControlName="categoryId">
+            <option [ngValue]="null" disabled>{{ 'CORP_PRODUCTS.selectCategory' | translate }}</option>
+            <option *ngFor="let cat of categories" [value]="cat.id">{{ cat.name }}</option>
+          </select>
+        </div>
+
+        <!-- Image Upload Section -->
+        <div class="form-group">
+          <label class="form-label-text">{{ 'CORP_PRODUCTS.images' | translate }} ({{ totalImageSlots }}/6)</label>
+
+          <!-- Existing images (edit mode) -->
+          <div class="image-grid" *ngIf="existingImages.length > 0">
+            <div class="image-thumb" *ngFor="let img of existingImages">
+              <img [src]="getImageUrl(img.imageUrl)" [alt]="'image'">
+              <div class="image-thumb-actions">
+                <button type="button" class="thumb-btn star-btn"
+                        [class.is-primary]="img.isPrimary"
+                        (click)="setExistingPrimary(img.id)"
+                        [title]="'CORP_PRODUCTS.setPrimary' | translate">★</button>
+                <button type="button" class="thumb-btn delete-btn"
+                        (click)="deleteExistingImage(img.id)"
+                        [title]="'COMMON.delete' | translate">✕</button>
+              </div>
+            </div>
           </div>
-          <div class="form-group">
-            <label class="form-label-text">Image URL *</label>
-            <input type="url" class="form-input" formControlName="imageUrl" placeholder="https://...">
+
+          <!-- New file previews -->
+          <div class="image-grid" *ngIf="newFilePreviews.length > 0">
+            <div class="image-thumb new-thumb" *ngFor="let preview of newFilePreviews; let i = index">
+              <img [src]="preview" alt="preview">
+              <div class="image-thumb-actions">
+                <button type="button" class="thumb-btn delete-btn"
+                        (click)="removeNewFile(i)"
+                        [title]="'COMMON.delete' | translate">✕</button>
+              </div>
+            </div>
           </div>
+
+          <!-- Upload zone -->
+          <label class="upload-zone" *ngIf="totalImageSlots < 6">
+            <input type="file" multiple accept="image/jpeg,image/png,image/webp" (change)="onFilesSelected($event)" class="upload-input">
+            <span class="upload-icon">📁</span>
+            <span class="upload-text">{{ 'CORP_PRODUCTS.uploadImages' | translate }}</span>
+            <span class="upload-hint">{{ 'CORP_PRODUCTS.uploadHint' | translate }}</span>
+          </label>
         </div>
 
         <div class="modal-footer">
-          <button type="button" class="btn-cancel" (click)="closeProductModal()">Cancel</button>
-          <button type="submit" class="btn-save" [disabled]="productForm.invalid">
-            {{ editingProductId ? 'Update' : 'Save Product' }}
+          <button type="button" class="btn-cancel" (click)="closeProductModal()">{{ 'COMMON.cancel' | translate }}</button>
+          <button type="submit" class="btn-save" [disabled]="productForm.invalid || isSaving">
+            {{ isSaving ? ('COMMON.saving' | translate) : (editingProductId ? ('CORP_PRODUCTS.update' | translate) : ('CORP_PRODUCTS.saveProduct' | translate)) }}
           </button>
         </div>
 

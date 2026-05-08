@@ -188,3 +188,15 @@
 button:disabled { opacity: 0.45; cursor: not-allowed; }
 
 .role-filter-bar.dimmed { opacity: 0.45; pointer-events: none; }
+
+@media (max-width: 768px) {
+  .page-header h2 { font-size: 1.3rem; }
+  .role-tab { min-height: 44px; }
+  .search-bar { min-height: 44px; }
+}
+
+@media (max-width: 480px) {
+  .users-grid { grid-template-columns: 1fr; }
+  .status-btn { min-height: 44px; }
+  .delete-btn { width: 44px; height: 44px; }
+}

@@ -15,7 +15,7 @@
 .table-card {
   background: var(--card-bg);
   border: 1px solid var(--border-color);
-  border-radius: 12px; overflow: hidden;
+  border-radius: 12px; overflow-x: auto;
 }
 
 .data-table { width: 100%; border-collapse: collapse; }
@@ -88,3 +88,10 @@
 
 @keyframes spin { to { transform: rotate(360deg); } }
 @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+@media (max-width: 768px) {
+  .header-content h2 { font-size: 1.4rem; }
+  .data-table { min-width: 600px; }
+  .btn-page { min-height: 44px; }
+  .pagination-controls { flex-wrap: wrap; gap: 10px; justify-content: center; }
+}

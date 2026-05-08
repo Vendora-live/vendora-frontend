@@ -140,4 +140,22 @@
 @keyframes spin { to { transform: rotate(360deg); } }
 @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
-@media (max-width: 768px) { .charts-row { grid-template-columns: 1fr; } }
+@media (max-width: 768px) {
+  .charts-row { grid-template-columns: 1fr; }
+  .header-content h2 { font-size: 1.4rem; }
+  .page-header { flex-direction: column; align-items: flex-start; }
+  .filters-bar { padding: 12px; }
+  .date-filter { flex-wrap: wrap; gap: 8px; }
+  .date-filter input[type="date"] { flex: 1; min-width: 130px; min-height: 44px; }
+  .btn-apply { min-height: 44px; width: 100%; }
+  .table-card { overflow-x: auto; }
+  .data-table { min-width: 500px; }
+}
+
+@media (max-width: 480px) {
+  .header-content h2 { font-size: 1.2rem; }
+  .stat-value { font-size: 1.1rem; }
+  .stat-card { padding: 14px; }
+  .chart-wrapper { height: 220px; }
+  .chart-wrapper.doughnut { height: 240px; }
+}

@@ -146,4 +146,6 @@
 @media (max-width: 480px) {
   .stats-row { grid-template-columns: 1fr 1fr; }
   .chart-wrapper { height: 220px; }
+  .stat-value { font-size: 1.1rem; }
+  .stat-card { padding: 14px; }
 }

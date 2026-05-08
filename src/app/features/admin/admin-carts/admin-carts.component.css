@@ -103,6 +103,7 @@
     cursor: pointer;
     background: transparent;
     transition: all 0.2s;
+    min-height: 44px;
 }
 
 .action-btn.delete {
@@ -146,4 +147,8 @@
     border-radius: 8px;
     border: 1px solid rgba(239, 68, 68, 0.2);
     margin-bottom: 2rem;
+}
+
+@media (max-width: 768px) {
+  .page-header h2 { font-size: 1.4rem; }
 }

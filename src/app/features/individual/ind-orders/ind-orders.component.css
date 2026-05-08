@@ -62,11 +62,12 @@
   .suborders .suborder-line { grid-template-columns: 1fr; gap: 6px; }
   .shipment-track-row { gap: 12px; }
   .order-actions-group { flex-direction: column; }
-  .view-details-btn, .action-btn { width: 100%; text-align: center; justify-content: center; }
+  .view-details-btn, .action-btn { width: 100%; text-align: center; justify-content: center; min-height: 44px; display: flex; align-items: center; }
 }
 
 @media (max-width: 480px) {
   .order-summary { grid-template-columns: 1fr; }
+  .order-card { border-radius: 8px; }
 }
 
 .order-info-group {

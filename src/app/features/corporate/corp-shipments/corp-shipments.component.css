@@ -98,6 +98,20 @@
 
 @media (max-width: 768px) {
   .form-grid { grid-template-columns: 1fr; }
+  .shipments-header h2 { font-size: 1.4rem; }
+  .new-shipment-btn { min-height: 44px; }
+  .create-btn, .cancel-btn { min-height: 44px; }
+  .header-actions { width: 100%; }
+  .store-selector { flex: 1; }
+  .store-selector select { flex: 1; min-height: 44px; }
+}
+
+@media (max-width: 480px) {
+  .shipments-header { flex-direction: column; align-items: flex-start; }
+  .status-btn { min-height: 44px; }
+  .cancel-shipment-btn { min-height: 44px; }
+  .actions-section { flex-direction: column; align-items: flex-start; }
+  .cancel-shipment-btn { margin-left: 0; }
 }
 
 .form-row {

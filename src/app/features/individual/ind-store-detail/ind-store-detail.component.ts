@@ -101,11 +101,8 @@ export class IndStoreDetailComponent implements OnInit {
     alert(`${product.name} added to cart!`);
   }
 
-  getImageUrl(url: string | null | undefined): string {
-    if (!url) return 'assets/placeholder-product.png';
-    if (url.startsWith('http://') || url.startsWith('https://')) return url;
-    if (url.startsWith('assets/images/')) return url;
-    return `assets/images/${url}`;
+  getImageUrl(product: Product): string {
+    return this.productService.getPrimaryImageUrl(product);
   }
 
   goBack(): void {

@@ -452,6 +452,7 @@ h1, h2, h3, h4, h5, h6 {
   border: 1px solid var(--border-color);
   color: var(--text-primary);
   padding: 8px 16px;
+  min-height: 44px;
   border-radius: var(--radius-btn);
   font-family: var(--font-body);
   font-size: 0.9rem;
@@ -520,5 +521,22 @@ h1, h2, h3, h4, h5, h6 {
   outline: none;
   border-color: var(--accent);
   box-shadow: var(--input-focus-shadow);
+}
+
+@media (max-width: 600px) {
+  .pagination-controls {
+    flex-wrap: wrap;
+    gap: 10px;
+    justify-content: center;
+  }
+  .jump-to-page {
+    width: 100%;
+    border-left: none;
+    padding-left: 0;
+    margin-left: 0;
+    border-top: 1px solid var(--border-color);
+    padding-top: 10px;
+    justify-content: center;
+  }
 }
 

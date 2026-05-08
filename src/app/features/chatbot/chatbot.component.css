@@ -40,7 +40,7 @@
   width: 400px;
   /* min(580px, 100vh-120px) — header always stays in viewport */
   height: min(580px, calc(100vh - 120px));
-  background: var(--card-bg, #111827);
+  background: var(--card-bg-solid, #111118);
   border: 1px solid var(--card-border, #1f2937);
   border-radius: 20px;
   box-shadow: 0 16px 56px rgba(0,0,0,0.35);
@@ -128,7 +128,7 @@
 .welcome-wrap { display:flex; flex-direction:column; gap:10px; }
 .welcome-row { display:flex; align-items:flex-start; gap:8px; }
 .welcome-bubble {
-  background: var(--card-bg);
+  background: var(--card-bg-solid);
   border: 1px solid var(--card-border);
   border-radius: 14px;
   border-top-left-radius: 4px;
@@ -192,7 +192,7 @@
 /* AI card */
 .ai-card {
   max-width: 85%;
-  background: var(--card-bg);
+  background: var(--card-bg-solid);
   border: 1px solid var(--card-border);
   border-radius: 14px;
   border-top-left-radius: 4px;
@@ -340,7 +340,7 @@
 .typing-bubble {
   display:flex; gap:5px;
   padding:11px 14px;
-  background: var(--card-bg);
+  background: var(--card-bg-solid);
   border:1px solid var(--card-border);
   border-radius:14px; border-top-left-radius:4px;
   align-items:center;
@@ -459,7 +459,7 @@
   display:flex; align-items:flex-end; gap:8px;
   padding:10px 12px;
   border-top:1px solid var(--card-border);
-  background: var(--card-bg);
+  background: var(--card-bg-solid);
   flex-shrink:0;
 }
 .chat-input textarea {
@@ -548,7 +548,7 @@
   z-index:10000; display:flex; align-items:center; justify-content:center;
 }
 .graph-modal {
-  position:relative; background:var(--card-bg,#111827);
+  position:relative; background:var(--card-bg-solid,#111118);
   padding:12px; border-radius:16px;
   max-width:90vw; max-height:90vh;
   display:flex; align-items:center; justify-content:center;

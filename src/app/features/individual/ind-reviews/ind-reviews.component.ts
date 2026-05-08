@@ -8,10 +8,11 @@ import { DtoReview, DtoReviewRequest, Sentiment } from '../../../shared/models/r
 import { Product } from '../../../shared/models/product';
 import { catchError } from 'rxjs/operators';
 import { of } from 'rxjs';
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-ind-reviews',
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, TranslateModule],
   templateUrl: './ind-reviews.component.html',
   styleUrl: './ind-reviews.component.css'
 })
@@ -135,11 +136,8 @@ export class IndReviewsComponent implements OnInit {
     }
   }
 
-  getImageUrl(url: string | null | undefined): string {
-    if (!url) return 'assets/placeholder-product.png';
-    if (url.startsWith('http://') || url.startsWith('https://')) return url;
-    if (url.startsWith('assets/images/')) return url;
-    return `assets/images/${url}`;
+  getImageUrl(product: Product): string {
+    return this.productService.getPrimaryImageUrl(product);
   }
 
   goToPage(pageStr: string): void {

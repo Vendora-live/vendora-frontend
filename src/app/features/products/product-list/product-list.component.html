@@ -1,7 +1,7 @@
 <div class="product-list-wrapper">
     <div class="page-header">
-        <h1>Products</h1>
-        <p class="subtitle">Browse and manage your product catalog</p>
+        <h1>{{ 'PRODUCTS.title' | translate }}</h1>
+        <p class="subtitle">{{ 'PRODUCTS.subtitle' | translate }}</p>
     </div>
 
     <!-- Category Filter -->
@@ -19,15 +19,15 @@
     @if (isLoading) {
     <div class="loading-container">
         <div class="spinner"></div>
-        <p>Loading products...</p>
+        <p>{{ 'PRODUCTS.loading' | translate }}</p>
     </div>
     }
 
     <!-- Error State -->
     @if (errorMessage) {
     <div class="error-container">
-        <p>{{ errorMessage }}</p>
-        <button class="retry-btn" (click)="loadProducts()">Retry</button>
+        <p>{{ 'PRODUCTS.loadError' | translate }}</p>
+        <button class="retry-btn" (click)="loadProducts()">{{ 'COMMON.retry' | translate }}</button>
     </div>
     }
 
@@ -35,29 +35,23 @@
     @if (!isLoading && !errorMessage) {
     @if (filteredProducts.length === 0) {
     <div class="empty-state">
-        <p>No products found.</p>
+        <p>{{ 'PRODUCTS.noResults' | translate }}</p>
     </div>
     } @else {
     <div class="product-grid">
         @for (product of filteredProducts; track product.id) {
         <div class="product-card" (click)="viewProduct(product.id)">
             <div class="card-image">
-                @if (product.imageUrl) {
-                <img [src]="`assets/images/${product.imageUrl}`" [alt]="product.name">
-                } @else {
-                <div class="placeholder-image">
-                    <span>📦</span>
-                </div>
-                }
+                <img [src]="getImageUrl(product)" [alt]="product.name">
                 <span class="category-badge">{{ product.categoryName }}</span>
             </div>
             <div class="card-body">
                 <h3 class="product-name">{{ product.name }}</h3>
                 <p class="product-desc">{{ product.description }}</p>
                 <div class="card-footer">
-                    <span class="price">₺{{ product.unitPrice | number:'1.2-2' }}</span>
+                    <span class="price">{{ product.unitPrice | currency:'TRY':'₺':'1.2-2' }}</span>
                     <span class="stock" [class.low-stock]="product.stockQuantity < 10">
-                        {{ product.stockQuantity }} in stock
+                        {{ 'PRODUCTS.inStockCount' | translate: {count: product.stockQuantity} }}
                     </span>
                 </div>
             </div>

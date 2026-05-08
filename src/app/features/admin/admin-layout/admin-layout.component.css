@@ -2,6 +2,24 @@
    ADMIN LAYOUT — Premium SaaS Dark
    ================================================================ */
 
+/* ── Mobile Sidebar Overlay ── */
+.sidebar-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 199;
+  backdrop-filter: blur(2px);
+  transition: opacity 0.3s ease;
+  opacity: 0;
+}
+
+.sidebar-overlay.visible { opacity: 1; }
+
+@media (max-width: 768px) {
+  .sidebar-overlay { display: block; }
+}
+
 .admin-layout {
   display: flex;
   height: 100vh;
@@ -204,6 +222,23 @@
   color: var(--admin-accent);
 }
 
+.lang-toggle-btn {
+  height: 34px;
+  padding: 0 10px;
+  background: var(--btn-ghost-bg);
+  border: 1px solid var(--btn-ghost-border);
+  border-radius: 8px; cursor: pointer; font-size: 0.75rem; font-weight: 600;
+  display: flex; align-items: center; justify-content: center;
+  transition: all 0.2s;
+  color: var(--text-muted);
+  letter-spacing: 0.05em;
+}
+.lang-toggle-btn:hover {
+  background: var(--admin-accent-hover);
+  border-color: var(--admin-accent-active);
+  color: var(--admin-accent);
+}
+
 /* ── Content Area ─────────────────────────────────────────── */
 .content {
   padding: 28px 32px;
@@ -238,6 +273,12 @@
   .sidebar.open { transform: translateX(0); }
   .sidebar-close-btn { display: flex; }
   .hamburger-btn { display: flex; }
-  .content { padding: 16px; }
-  .top-header { padding: 0 16px; }
+  .content { padding: 14px; }
+  .top-header { padding: 0 12px; }
+}
+
+@media (max-width: 400px) {
+  .content { padding: 10px; }
+  .top-header { padding: 0 8px; gap: 8px; }
+  .theme-toggle-btn, .lang-toggle-btn { width: 34px; height: 34px; }
 }

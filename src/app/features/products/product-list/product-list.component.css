@@ -77,7 +77,7 @@
 }
 
 .product-card {
-  background: var(--card-bg);
+  background: var(--card-bg-solid);
   border-radius: var(--radius-card);
   overflow: hidden;
   box-shadow: var(--card-shadow);
@@ -97,7 +97,7 @@
   position: relative;
   height: 200px;
   overflow: hidden;
-  background: rgba(255,255,255,0.02);
+  background: var(--surface-bg);
   border-bottom: 1px solid var(--border-color);
 }
 
@@ -193,7 +193,7 @@
 
 .spinner {
   width: 40px; height: 40px;
-  border: 3px solid rgba(255,255,255,0.06);
+  border: 3px solid var(--border-color);
   border-top-color: #6366f1;
   border-radius: 50%;
   animation: spin 0.8s linear infinite;

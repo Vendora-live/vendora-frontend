@@ -254,3 +254,17 @@
   color: var(--text-primary);
   font-size: 1.05rem;
 }
+
+@media (max-width: 600px) {
+  .reviews-header h2 { font-size: 1.4rem; }
+  .review-top { flex-direction: column; align-items: flex-start; gap: 8px; }
+  .sentiment-badge { align-self: flex-start; }
+  .review-actions { justify-content: flex-start; flex-wrap: wrap; }
+  .edit-actions { justify-content: flex-start; flex-wrap: wrap; }
+  .action-btn { min-height: 44px; }
+}
+
+@media (max-width: 480px) {
+  .review-card { padding: 14px; }
+  .star-btn { font-size: 1.5rem; }
+}

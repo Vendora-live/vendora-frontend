@@ -3,54 +3,59 @@
     @if (isLoading) {
     <div class="loading-container">
         <div class="spinner"></div>
-        <p>Loading product...</p>
+        <p>{{ 'PRODUCTS.loadingDetail' | translate }}</p>
     </div>
     }
 
     <!-- Error -->
     @if (errorMessage) {
     <div class="error-container">
-        <p>{{ errorMessage }}</p>
-        <button class="back-btn" (click)="goBack()">← Back to Products</button>
+        <p>{{ 'PRODUCTS.loadError' | translate }}</p>
+        <button class="back-btn" (click)="goBack()">{{ 'PRODUCTS.backToList' | translate }}</button>
     </div>
     }
 
     <!-- Product Detail -->
     @if (product && !isLoading) {
-    <button class="back-btn" (click)="goBack()">← Back to Products</button>
+    <button class="back-btn" (click)="goBack()">{{ 'PRODUCTS.backToList' | translate }}</button>
 
     <div class="detail-card">
+        <!-- Image Gallery -->
         <div class="detail-image">
-            @if (product.imageUrl) {
-            <img [src]="getImageUrl(product.imageUrl)" [alt]="product.name">
-            } @else {
-            <div class="placeholder-image">
-                <span>📦</span>
+            <div class="gallery-main">
+                <img [src]="activeImageUrl" [alt]="product.name">
             </div>
-            }
+            <div class="gallery-thumbs" *ngIf="product.images && product.images.length > 1">
+                <div class="gallery-thumb"
+                     *ngFor="let img of product.images; let i = index"
+                     [class.active]="i === activeImageIndex"
+                     (click)="setActiveImage(i)">
+                    <img [src]="getImageUrl(img.imageUrl)" [alt]="product.name">
+                </div>
+            </div>
         </div>
 
         <div class="detail-info">
-            <span class="category-tag">{{ product.categoryName || 'General' }}</span>
+            <span class="category-tag">{{ product.categoryName || ('PRODUCTS.general' | translate) }}</span>
             <h1 class="product-title">{{ product.name }}</h1>
             <p class="product-description">{{ product.description }}</p>
 
             <div class="price-block">
-                <span class="price-label">Price</span>
-                <span class="price-value">₺{{ product.unitPrice | number:'1.2-2' }}</span>
+                <span class="price-label">{{ 'PRODUCTS.priceLabel' | translate }}</span>
+                <span class="price-value">{{ product.unitPrice | currency:'TRY':'₺':'1.2-2' }}</span>
             </div>
 
             <div class="availability critical" *ngIf="product.stockQuantity > 0 && product.stockQuantity <= 5">
                 <span class="avail-dot critical-dot"></span>
-                <span>🔥 Only {{ product.stockQuantity }} left — Order soon!</span>
+                <span>{{ 'PRODUCTS.criticalStock' | translate: {count: product.stockQuantity} }}</span>
             </div>
             <div class="availability" *ngIf="product.stockQuantity > 5">
                 <span class="avail-dot in-stock"></span>
-                <span>In Stock</span>
+                <span>{{ 'PRODUCTS.inStockLabel' | translate }}</span>
             </div>
             <div class="availability" *ngIf="product.stockQuantity === 0">
                 <span class="avail-dot out-stock"></span>
-                <span>Out of Stock</span>
+                <span>{{ 'PRODUCTS.outOfStock' | translate }}</span>
             </div>
 
             <div class="action-section">
@@ -60,7 +65,7 @@
                     <button class="qty-btn" (click)="incrementQty()">+</button>
                 </div>
                 <button class="add-to-cart-btn" (click)="addToCart(product.id)" [disabled]="product.stockQuantity === 0">
-                    🛒 Add to Cart
+                    {{ 'PRODUCTS.addToCartBtn' | translate }}
                 </button>
             </div>
         </div>

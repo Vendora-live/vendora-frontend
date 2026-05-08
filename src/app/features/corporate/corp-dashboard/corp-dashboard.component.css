@@ -318,3 +318,15 @@
 }
 
 .btn-submit:disabled { opacity: 0.45; cursor: not-allowed; }
+
+@media (max-width: 768px) {
+  .dash-header-left h2 { font-size: 1.3rem; }
+  .btn-add-store { min-height: 44px; }
+  .stat-card { min-width: 0; }
+}
+
+@media (max-width: 480px) {
+  .stat-info .stat-value { font-size: 1.5rem; }
+  .btn-manage { min-height: 44px; width: 100%; justify-content: center; }
+  .btn-submit { min-height: 44px; }
+}

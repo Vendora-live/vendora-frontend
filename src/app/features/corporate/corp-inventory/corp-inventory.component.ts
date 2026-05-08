@@ -121,11 +121,10 @@ export class CorpInventoryComponent implements OnInit {
     const request: ProductRequest = {
       name: product.name,
       description: product.description,
-      imageUrl: product.imageUrl,
       sku: product.sku,
       unitPrice: product.unitPrice,
       stockQuantity: this.editStockValue,
-      categoryId: null, // Keep existing
+      categoryId: null,
       storeId: product.storeId
     };
 
@@ -157,10 +156,7 @@ export class CorpInventoryComponent implements OnInit {
     return 'stock-ok';
   }
 
-  getImageUrl(url: string | null | undefined): string {
-    if (!url) return 'assets/placeholder-product.png';
-    if (url.startsWith('http://') || url.startsWith('https://')) return url;
-    if (url.startsWith('assets/images/')) return url;
-    return `assets/images/${url}`;
+  getImageUrl(product: Product): string {
+    return this.productService.getPrimaryImageUrl(product);
   }
 }

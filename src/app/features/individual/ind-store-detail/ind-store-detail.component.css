@@ -1,5 +1,6 @@
 .store-detail-container {
     padding: 1rem;
+    font-family: 'DM Sans', sans-serif;
 }
 
 .back-link {
@@ -7,7 +8,7 @@
 }
 
 .back-link a {
-    color: #6b7280;
+    color: var(--text-secondary);
     text-decoration: none;
     display: inline-flex;
     align-items: center;
@@ -17,7 +18,7 @@
 }
 
 .back-link a:hover {
-    color: #111827;
+    color: var(--text-primary);
 }
 
 /* States */
@@ -28,37 +29,37 @@
     justify-content: center;
     padding: 4rem 2rem;
     text-align: center;
-    background: #f9fafb;
-    border-radius: 12px;
-    border: 1px dashed #d1d5db;
-    color: #6b7280;
+    background: var(--card-bg-solid);
+    border-radius: var(--radius-card);
+    border: 1px dashed var(--border-color);
+    color: var(--text-secondary);
 }
 
 .spinner {
-    border: 4px solid rgba(0,0,0,0.1);
+    border: 4px solid var(--border-color);
     width: 40px;
     height: 40px;
     border-radius: 50%;
-    border-left-color: #3b82f6;
+    border-left-color: var(--ind-nav-color);
     animation: spin 1s linear infinite;
     margin-bottom: 1rem;
 }
 
 @keyframes spin {
-    0% { transform: rotate(0deg); }
+    0%   { transform: rotate(0deg); }
     100% { transform: rotate(360deg); }
 }
 
 /* Store Hero */
 .store-hero {
     position: relative;
-    background: linear-gradient(135deg, #3b82f6 0%, #8b5cf6 100%);
-    border-radius: 16px;
+    background: linear-gradient(135deg, #4f46e5 0%, #8b5cf6 100%);
+    border-radius: var(--radius-card);
     padding: 3rem 2rem;
     color: white;
     margin-bottom: 3rem;
     overflow: hidden;
-    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 10px 30px rgba(79, 70, 229, 0.3);
 }
 
 .hero-overlay {
@@ -78,6 +79,8 @@
     font-size: 2.5rem;
     font-weight: 800;
     margin-bottom: 1rem;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    letter-spacing: -0.02em;
 }
 
 .store-meta {
@@ -107,13 +110,15 @@
 /* Products Section */
 .products-section h3 {
     font-size: 1.5rem;
-    color: #1f2937;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-weight: 700;
+    color: var(--text-primary);
     margin-bottom: 2rem;
     padding-bottom: 1rem;
-    border-bottom: 1px solid #e5e7eb;
+    border-bottom: 1px solid var(--border-color);
 }
 
-/* Reusing Product Grid Styles from ind-products */
+/* Product Grid */
 .product-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
@@ -121,19 +126,19 @@
 }
 
 .product-card {
-    background: #ffffff;
-    border-radius: 16px;
+    background: var(--card-bg-solid);
+    border-radius: var(--radius-card);
     overflow: hidden;
-    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+    box-shadow: var(--card-shadow);
     transition: transform 0.3s ease, box-shadow 0.3s ease;
-    border: 1px solid #f3f4f6;
+    border: 1px solid var(--card-border);
     display: flex;
     flex-direction: column;
 }
 
 .product-card:hover {
     transform: translateY(-5px);
-    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+    box-shadow: var(--card-shadow-hover);
 }
 
 .product-image {
@@ -142,8 +147,9 @@
     background-repeat: no-repeat;
     background-position: center;
     position: relative;
-    background-color: #f3f4f6;
+    background-color: var(--surface-bg);
     padding: 1rem;
+    border-bottom: 1px solid var(--border-color);
 }
 
 .badge {
@@ -157,22 +163,13 @@
     border-radius: 9999px;
 }
 
-.badge.low {
-    background: #f59e0b;
-}
-
-.badge.critical {
-    background: #ef4444;
-    animation: pulse-critical 1.5s ease-in-out infinite;
-}
-
-.badge.out-of-stock {
-    background: #6b7280;
-}
+.badge.low      { background: #f59e0b; }
+.badge.critical { background: #ef4444; animation: pulse-critical 1.5s ease-in-out infinite; }
+.badge.out-of-stock { background: #6b7280; }
 
 @keyframes pulse-critical {
     0%, 100% { box-shadow: 0 0 0 0 rgba(239,68,68,0.5); }
-    50% { box-shadow: 0 0 0 6px rgba(239,68,68,0); }
+    50%       { box-shadow: 0 0 0 6px rgba(239,68,68,0); }
 }
 
 .product-details {
@@ -184,26 +181,29 @@
 
 .product-category {
     font-size: 0.75rem;
-    color: #8b5cf6;
+    color: var(--ind-nav-color);
     text-transform: uppercase;
     font-weight: 700;
     margin-bottom: 0.5rem;
+    letter-spacing: 0.05em;
 }
 
 .product-title {
     font-size: 1.125rem;
     font-weight: 600;
-    color: #111827;
+    color: var(--text-primary);
     margin-bottom: 0.5rem;
     cursor: pointer;
+    line-height: 1.3;
+    transition: color 0.2s;
 }
 
 .product-title:hover {
-    color: #3b82f6;
+    color: var(--ind-nav-color);
 }
 
 .product-desc {
-    color: #6b7280;
+    color: var(--text-secondary);
     font-size: 0.875rem;
     line-height: 1.5;
     margin-bottom: 1.5rem;
@@ -221,20 +221,20 @@
     justify-content: space-between;
     margin-top: auto;
     padding-top: 1rem;
-    border-top: 1px solid #f3f4f6;
+    border-top: 1px solid var(--border-color);
 }
 
 .price {
     font-size: 1.25rem;
     font-weight: 700;
-    color: #111827;
+    color: var(--text-primary);
 }
 
 .add-to-cart-btn {
-    background: #3b82f6;
+    background: var(--ind-accent);
     color: white;
     border: none;
-    border-radius: 8px;
+    border-radius: var(--radius-btn);
     padding: 0.5rem 1rem;
     font-weight: 600;
     font-size: 0.875rem;
@@ -242,27 +242,30 @@
     display: flex;
     align-items: center;
     gap: 0.5rem;
-    transition: background 0.2s;
+    transition: opacity 0.2s;
 }
 
 .add-to-cart-btn:hover:not(:disabled) {
-    background: #2563eb;
+    opacity: 0.87;
 }
 
 .add-to-cart-btn:disabled {
-    background: #9ca3af;
+    background: var(--btn-ghost-bg);
+    color: var(--text-muted);
     cursor: not-allowed;
     opacity: 0.7;
 }
 
 @media (max-width: 768px) {
-  .store-hero { padding: 2rem 1.25rem; margin-bottom: 2rem; }
-  .hero-content h2 { font-size: 1.6rem; }
-  .store-meta { flex-wrap: wrap; gap: 0.5rem; }
-  .product-grid { grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 1rem; }
+    .store-hero { padding: 2rem 1.25rem; margin-bottom: 2rem; }
+    .hero-content h2 { font-size: 1.6rem; }
+    .store-meta { flex-wrap: wrap; gap: 0.5rem; }
+    .product-grid { grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 1rem; }
+    .add-to-cart-btn { min-height: 44px; }
 }
 
 @media (max-width: 480px) {
-  .hero-content h2 { font-size: 1.3rem; }
-  .product-grid { grid-template-columns: 1fr; }
+    .hero-content h2 { font-size: 1.3rem; }
+    .product-grid { grid-template-columns: 1fr; }
+    .products-section h3 { font-size: 1.1rem; margin-bottom: 1rem; }
 }

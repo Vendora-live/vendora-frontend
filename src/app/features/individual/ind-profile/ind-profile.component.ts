@@ -6,10 +6,11 @@ import { ToastService } from '../../../core/services/toast.service';
 import { DtoCustomerProfile, DtoCustomerProfileRequest, MembershipType } from '../../../shared/models/customer-profile';
 import { catchError } from 'rxjs/operators';
 import { of } from 'rxjs';
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-ind-profile',
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, TranslateModule],
   templateUrl: './ind-profile.component.html',
   styleUrl: './ind-profile.component.css'
 })

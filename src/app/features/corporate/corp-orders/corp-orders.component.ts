@@ -9,10 +9,11 @@ import { DtoOrder, OrderStatus } from '../../../shared/models/order';
 import { Store } from '../../../shared/models/store';
 import { catchError } from 'rxjs/operators';
 import { of } from 'rxjs';
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-corp-orders',
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, TranslateModule],
   templateUrl: './corp-orders.component.html',
   styleUrl: './corp-orders.component.css'
 })

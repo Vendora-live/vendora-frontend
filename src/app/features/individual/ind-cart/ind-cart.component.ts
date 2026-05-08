@@ -2,6 +2,7 @@ import { Component, inject, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { CartService } from '../../../core/services/cart.service';
+import { ProductService } from '../../../core/services/product.service';
 import { ToastService } from '../../../core/services/toast.service';
 import { FormsModule } from '@angular/forms';
 import { OrderService } from '../../../core/services/order.service';
@@ -11,17 +12,19 @@ import { DtoAddress } from '../../../shared/models/address';
 import { catchError } from 'rxjs/operators';
 import { of } from 'rxjs';
 import { environment } from '../../../../environments/environment';
+import { TranslateModule } from '@ngx-translate/core';
 
 declare var Stripe: any;
 
 @Component({
   selector: 'app-ind-cart',
-  imports: [CommonModule, RouterLink, FormsModule],
+  imports: [CommonModule, RouterLink, FormsModule, TranslateModule],
   templateUrl: './ind-cart.component.html',
   styleUrl: './ind-cart.component.css'
 })
 export class IndCartComponent implements OnInit {
   cartService = inject(CartService);
+  productService = inject(ProductService);
   toastService = inject(ToastService);
   orderService = inject(OrderService);
   paymentService = inject(PaymentService);
@@ -150,9 +153,6 @@ export class IndCartComponent implements OnInit {
   }
 
   getImageUrl(url: string | null | undefined): string {
-    if (!url) return 'assets/placeholder-image.webp';
-    if (url.startsWith('http://') || url.startsWith('https://')) return url;
-    if (url.startsWith('assets/')) return url;
-    return `assets/images/${url}`;
+    return this.productService.getImageUrl(url);
   }
 }

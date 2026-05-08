@@ -3,11 +3,12 @@ import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { StoreService } from '../../../core/services/store.service';
 import { Store } from '../../../shared/models/store';
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-ind-stores',
   standalone: true,
-  imports: [CommonModule, RouterLink],
+  imports: [CommonModule, RouterLink, TranslateModule],
   templateUrl: './ind-stores.component.html',
   styleUrl: './ind-stores.component.css'
 })

@@ -339,3 +339,15 @@
   color: var(--text-muted);
   line-height: 1.5;
 }
+
+@media (max-width: 600px) {
+  .page-header h2 { font-size: 1.4rem; }
+  .apply-form-card, .status-card, .benefits-section { padding: 20px 16px; }
+  .detail-row { flex-direction: column; gap: 4px; }
+  .detail-label { min-width: unset; }
+}
+
+@media (max-width: 480px) {
+  .benefits-grid { grid-template-columns: 1fr 1fr; }
+  .status-card-header { flex-wrap: wrap; gap: 10px; }
+}

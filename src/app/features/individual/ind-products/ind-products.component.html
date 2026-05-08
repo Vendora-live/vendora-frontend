@@ -1,25 +1,26 @@
 <div class="products-container">
     <div class="page-header">
-        <h2>Discover Products</h2>
-        <p>Explore the best items from our verified stores.</p>
+        <h2>{{ 'PRODUCTS.title' | translate }}</h2>
+        <p>{{ 'PRODUCTS.subtitle' | translate }}</p>
     </div>
 
     <!-- Filters Bar -->
     <div class="filters-bar" *ngIf="!isLoading && !errorMessage">
         <div class="search-box">
-            <input type="text" [(ngModel)]="searchTerm" (ngModelChange)="applyFilters()" placeholder="Search products..." />
+            <input type="text" [(ngModel)]="searchTerm" (ngModelChange)="applyFilters()"
+                [placeholder]="'PRODUCTS.searchPlaceholder' | translate" />
         </div>
         <div class="filter-controls">
             <select [(ngModel)]="selectedCategory" (ngModelChange)="applyFilters()">
-                <option value="ALL">All Categories</option>
+                <option value="ALL">{{ 'PRODUCTS.allCategories' | translate }}</option>
                 <option *ngFor="let cat of categories" [value]="cat">{{ cat }}</option>
             </select>
             <select [(ngModel)]="sortOption" (ngModelChange)="applyFilters()">
-                <option value="DEFAULT">Sort By: Recommended</option>
-                <option value="PRICE_ASC">Price: Low to High</option>
-                <option value="PRICE_DESC">Price: High to Low</option>
-                <option value="NAME_ASC">Name: A to Z</option>
-                <option value="NAME_DESC">Name: Z to A</option>
+                <option value="DEFAULT">{{ 'PRODUCTS.sortRecommended' | translate }}</option>
+                <option value="PRICE_ASC">{{ 'PRODUCTS.sortPriceLow' | translate }}</option>
+                <option value="PRICE_DESC">{{ 'PRODUCTS.sortPriceHigh' | translate }}</option>
+                <option value="NAME_ASC">{{ 'PRODUCTS.sortNameAZ' | translate }}</option>
+                <option value="NAME_DESC">{{ 'PRODUCTS.sortNameZA' | translate }}</option>
             </select>
         </div>
     </div>
@@ -27,7 +28,7 @@
     <!-- Loading State -->
     <div *ngIf="isLoading" class="loading-state">
         <div class="spinner"></div>
-        <p>Loading products...</p>
+        <p>{{ 'PRODUCTS.loading' | translate }}</p>
     </div>
 
     <!-- Error State -->
@@ -38,27 +39,27 @@
     <!-- Empty State -->
     <div *ngIf="!isLoading && !errorMessage && filteredProducts.length === 0" class="empty-state">
         <i class="icon">🛍️</i>
-        <p>No products match your search or filters.</p>
+        <p>{{ 'PRODUCTS.noResults' | translate }}</p>
     </div>
 
     <!-- Product Grid -->
     <div *ngIf="!isLoading && !errorMessage && filteredProducts.length > 0" class="product-grid">
         <div class="product-card" *ngFor="let product of filteredProducts" [routerLink]="['/individual/products', product.id]" style="cursor: pointer;">
-            <div class="product-image" [style.backgroundImage]="'url(' + getImageUrl(product.imageUrl) + ')'">
-                <div class="badge critical" *ngIf="product.stockQuantity > 0 && product.stockQuantity <= 5">🔥 Only {{ product.stockQuantity }} left!</div>
-                <div class="badge low" *ngIf="product.stockQuantity > 5 && product.stockQuantity <= 10">Low Stock</div>
-                <div class="badge out-of-stock" *ngIf="product.stockQuantity === 0">Out of Stock</div>
+            <div class="product-image" [style.backgroundImage]="'url(' + getImageUrl(product) + ')'">
+                <div class="badge critical" *ngIf="product.stockQuantity > 0 && product.stockQuantity <= 5">🔥 {{ 'PRODUCTS.onlyLeft' | translate: {count: product.stockQuantity} }}</div>
+                <div class="badge low" *ngIf="product.stockQuantity > 5 && product.stockQuantity <= 10">{{ 'PRODUCTS.lowStock' | translate }}</div>
+                <div class="badge out-of-stock" *ngIf="product.stockQuantity === 0">{{ 'PRODUCTS.outOfStock' | translate }}</div>
             </div>
-            
+
             <div class="product-details">
-                <div class="product-category">{{ product.categoryName || 'General' }}</div>
+                <div class="product-category">{{ product.categoryName || ('PRODUCTS.general' | translate) }}</div>
                 <h3 class="product-title">{{ product.name }}</h3>
                 <p class="product-desc">{{ product.description }}</p>
-                
+
                 <div class="product-footer">
                     <span class="price">₺{{ product.unitPrice | number:'1.2-2' }}</span>
                     <button class="add-to-cart-btn" [disabled]="product.stockQuantity === 0" (click)="addToCart(product); $event.stopPropagation()">
-                        <i class="icon">🛒</i> Add
+                        <i class="icon">🛒</i> {{ 'PRODUCTS.addToCart' | translate }}
                     </button>
                 </div>
             </div>
@@ -67,13 +68,13 @@
 
     <!-- Pagination -->
     <div class="pagination-controls" *ngIf="totalPages >= 0 && !isLoading && !errorMessage">
-        <button class="btn-page" (click)="prevPage()" [disabled]="pageNumber === 0">← Previous</button>
-        <span class="page-info">Page {{ pageNumber + 1 }} of {{ totalPages }}</span>
-        <button class="btn-page" (click)="nextPage()" [disabled]="pageNumber >= totalPages - 1">Next →</button>
-    
+        <button class="btn-page" (click)="prevPage()" [disabled]="pageNumber === 0">{{ 'COMMON.prevPage' | translate }}</button>
+        <span class="page-info">{{ 'COMMON.pagination' | translate: {current: pageNumber + 1, total: totalPages} }}</span>
+        <button class="btn-page" (click)="nextPage()" [disabled]="pageNumber >= totalPages - 1">{{ 'COMMON.nextPage' | translate }}</button>
+
         <div class="jump-to-page">
-            <input type="number" #pageInput min="1" [max]="totalPages" placeholder="Go to..." (keyup.enter)="goToPage(pageInput.value)" class="page-input">
-            <button class="btn-page" (click)="goToPage(pageInput.value)">Go</button>
+            <input type="number" #pageInput min="1" [max]="totalPages" [placeholder]="'COMMON.goToPage' | translate" (keyup.enter)="goToPage(pageInput.value)" class="page-input">
+            <button class="btn-page" (click)="goToPage(pageInput.value)">{{ 'COMMON.goTo' | translate }}</button>
         </div>
     </div>
 </div>

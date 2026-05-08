@@ -1,38 +1,38 @@
 <div class="orders-container">
   <div class="orders-header">
     <div class="header-content">
-      <h2>Store Orders & Fulfillment</h2>
-      <p class="header-sub">Manage your store's shipments, view sub-orders, and update statuses.</p>
+      <h2>{{ 'CORP_ORDERS.title' | translate }}</h2>
+      <p class="header-sub">{{ 'CORP_ORDERS.subtitle' | translate }}</p>
     </div>
   </div>
 
   <div class="loader" *ngIf="isLoading">
     <div class="spinner"></div>
-    <p>Loading sub-orders...</p>
+    <p>{{ 'CORP_ORDERS.loading' | translate }}</p>
   </div>
 
   <div class="orders-list" *ngIf="!isLoading && orders.length > 0">
     <div class="order-card" *ngFor="let order of orders" [class.expanded]="expandedOrderId === order.id">
-      
+
       <!-- Order Summary -->
       <div class="order-summary" (click)="toggleExpand(order.id)">
         <div class="order-info-group">
-          <span class="order-label">Sub-Order #</span>
+          <span class="order-label">{{ 'CORP_ORDERS.subOrderId' | translate }}</span>
           <span class="order-value">{{ order.id }}</span>
         </div>
-        
+
         <div class="order-info-group date-group">
-          <span class="order-label">Date</span>
+          <span class="order-label">{{ 'CORP_ORDERS.date' | translate }}</span>
           <span class="order-value">{{ order.orderDate | date:'mediumDate' }}</span>
         </div>
 
         <div class="order-info-group total-group">
-          <span class="order-label">Sales</span>
+          <span class="order-label">{{ 'CORP_ORDERS.sales' | translate }}</span>
           <span class="order-value highlight">{{ order.grandTotal | currency:'TRY':'₺' }}</span>
         </div>
 
         <div class="order-info-group status-group">
-          <span class="order-label">Fulfillment Status</span>
+          <span class="order-label">{{ 'CORP_ORDERS.fulfillmentStatus' | translate }}</span>
           <span class="status-badge" [ngClass]="getStatusClass(order.status)">
             {{ getStatusIcon(order.status) }} {{ order.status }}
           </span>
@@ -47,11 +47,10 @@
       <!-- Expanded Details -->
       <div class="order-details" *ngIf="expandedOrderId === order.id">
         <div class="details-divider"></div>
-        
+
         <div class="details-grid">
-          <!-- Items to fulfill -->
           <div class="items-section">
-            <h4>Items to Pack</h4>
+            <h4>{{ 'CORP_ORDERS.itemsToPack' | translate }}</h4>
             <div class="item-line" *ngFor="let item of order.items">
               <div class="item-qty">{{ item.quantity }}x</div>
               <div class="item-name">{{ item.productName }}</div>
@@ -59,27 +58,26 @@
             </div>
           </div>
 
-          <!-- Status Actions -->
           <div class="status-update-section" *ngIf="order.status === OrderStatus.PAID || order.status === OrderStatus.PARTIALLY_SHIPPED || order.status === OrderStatus.SHIPPED">
-            <h4>Fulfillment Actions</h4>
+            <h4>{{ 'CORP_ORDERS.fulfillmentActions' | translate }}</h4>
             <div class="status-controls action-buttons-group">
-              <button class="action-btn ship-btn" 
+              <button class="action-btn ship-btn"
                       [disabled]="order.status === OrderStatus.SHIPPED"
                       (click)="openShipmentModal(order, $event)">
-                Initialize Shipment
+                {{ 'CORP_ORDERS.initShipment' | translate }}
               </button>
             </div>
-            <p class="status-help">Track your fulfillment progress and update the system accordingly.</p>
+            <p class="status-help">{{ 'CORP_ORDERS.trackProgress' | translate }}</p>
           </div>
-          
+
           <div class="status-update-section" *ngIf="order.status === OrderStatus.CANCELLED">
-             <h4>Status</h4>
-             <p class="status-help" style="color: var(--danger);">This order has been cancelled and cannot be updated.</p>
+            <h4>{{ 'CORP_ORDERS.status' | translate }}</h4>
+            <p class="status-help" style="color: var(--danger);">{{ 'CORP_ORDERS.cancelledNote' | translate }}</p>
           </div>
-          
+
           <div class="status-update-section" *ngIf="order.status === OrderStatus.DELIVERED">
-             <h4>Status</h4>
-             <p class="status-help" style="color: var(--success);">Order has been successfully delivered. No further actions needed.</p>
+            <h4>{{ 'CORP_ORDERS.status' | translate }}</h4>
+            <p class="status-help" style="color: var(--success);">{{ 'CORP_ORDERS.deliveredNote' | translate }}</p>
           </div>
         </div>
       </div>
@@ -89,51 +87,52 @@
 
   <!-- Pagination -->
   <div class="pagination-controls" *ngIf="totalPages >= 0 && !isLoading">
-      <button class="btn-page" (click)="prevPage()" [disabled]="pageNumber === 0">← Previous</button>
-      <span class="page-info">Page {{ pageNumber + 1 }} of {{ totalPages }}</span>
-      <button class="btn-page" (click)="nextPage()" [disabled]="pageNumber >= totalPages - 1">Next →</button>
-  
-        <div class="jump-to-page">
-            <input type="number" #pageInput min="1" [max]="totalPages" placeholder="Go to..." (keyup.enter)="goToPage(pageInput.value)" class="page-input">
-            <button class="btn-page" (click)="goToPage(pageInput.value)">Go</button>
-        </div>
-    </div>
+      <button class="btn-page" (click)="prevPage()" [disabled]="pageNumber === 0">{{ 'COMMON.prevPage' | translate }}</button>
+      <span class="page-info">{{ 'COMMON.pagination' | translate: {current: pageNumber + 1, total: totalPages} }}</span>
+      <button class="btn-page" (click)="nextPage()" [disabled]="pageNumber >= totalPages - 1">{{ 'COMMON.nextPage' | translate }}</button>
+
+      <div class="jump-to-page">
+          <input type="number" #pageInput min="1" [max]="totalPages" [placeholder]="'COMMON.goToPage' | translate" (keyup.enter)="goToPage(pageInput.value)" class="page-input">
+          <button class="btn-page" (click)="goToPage(pageInput.value)">{{ 'COMMON.goTo' | translate }}</button>
+      </div>
+  </div>
 
   <div class="empty-state" *ngIf="!isLoading && orders.length === 0">
     <div class="empty-icon">🏪</div>
-    <h3 *ngIf="!selectedStoreId">No store selected</h3>
-    <h3 *ngIf="selectedStoreId">No orders yet</h3>
-    <p *ngIf="selectedStoreId">When customers purchase your items, their orders will appear here.</p>
+    <h3 *ngIf="!selectedStoreId">{{ 'CORP_ORDERS.noStore' | translate }}</h3>
+    <h3 *ngIf="selectedStoreId">{{ 'CORP_ORDERS.noOrders' | translate }}</h3>
+    <p *ngIf="selectedStoreId">{{ 'CORP_ORDERS.noOrdersDesc' | translate }}</p>
   </div>
 </div>
 
-<!-- Shipment Initialization Modal -->
+<!-- Shipment Modal -->
 <div class="modal-overlay" *ngIf="showShipmentModal" (click)="closeShipmentModal()">
   <div class="modal-content" (click)="$event.stopPropagation()">
     <div class="modal-header">
-      <h3>Initialize Shipment</h3>
+      <h3>{{ 'CORP_ORDERS.shipmentTitle' | translate }}</h3>
       <button class="close-btn" (click)="closeShipmentModal()">×</button>
     </div>
     <div class="modal-body">
       <div class="form-group">
-        <label for="warehouse">Origin Warehouse *</label>
-        <input type="text" id="warehouse" class="modal-input" [(ngModel)]="shipmentFormData.warehouse" placeholder="e.g. Main Depot">
+        <label for="warehouse">{{ 'CORP_ORDERS.warehouse' | translate }}</label>
+        <input type="text" id="warehouse" class="modal-input" [(ngModel)]="shipmentFormData.warehouse"
+          [placeholder]="'CORP_ORDERS.warehousePlaceholder' | translate">
       </div>
       <div class="form-group">
-        <label for="mode">Shipping Mode *</label>
+        <label for="mode">{{ 'CORP_ORDERS.shippingMode' | translate }}</label>
         <select id="mode" class="modal-input" [(ngModel)]="shipmentFormData.mode">
-          <option value="Standard">Standard Delivery</option>
-          <option value="Express">Express Delivery</option>
-          <option value="Same Day">Same Day Delivery</option>
+          <option value="Standard">{{ 'CORP_ORDERS.standard' | translate }}</option>
+          <option value="Express">{{ 'CORP_ORDERS.express' | translate }}</option>
+          <option value="Same Day">{{ 'CORP_ORDERS.sameDay' | translate }}</option>
         </select>
       </div>
     </div>
     <div class="modal-footer">
-      <button class="btn btn-secondary" (click)="closeShipmentModal()">Cancel</button>
-      <button class="btn btn-primary" 
-              (click)="submitShipment()" 
+      <button class="btn btn-secondary" (click)="closeShipmentModal()">{{ 'COMMON.cancel' | translate }}</button>
+      <button class="btn btn-primary"
+              (click)="submitShipment()"
               [disabled]="!shipmentFormData.warehouse || !shipmentFormData.mode || isInitializingShipment">
-        {{ isInitializingShipment ? 'Processing...' : 'Confirm Shipment' }}
+        {{ isInitializingShipment ? ('COMMON.processing' | translate) : ('CORP_ORDERS.confirmShipment' | translate) }}
       </button>
     </div>
   </div>

@@ -1,8 +1,8 @@
 <div class="history-container">
   <div class="page-header">
     <div class="header-content">
-      <h2>Purchase History</h2>
-      <p class="header-sub">A complete record of your delivered and cancelled orders.</p>
+      <h2>{{ 'HISTORY.title' | translate }}</h2>
+      <p class="header-sub">{{ 'HISTORY.subtitle' | translate }}</p>
     </div>
   </div>
 
@@ -12,21 +12,21 @@
       <span class="stat-icon">🎉</span>
       <div class="stat-info">
         <span class="stat-value">{{ deliveredCount }}</span>
-        <span class="stat-label">Delivered</span>
+        <span class="stat-label">{{ 'HISTORY.delivered' | translate }}</span>
       </div>
     </div>
     <div class="stat-card cancelled">
       <span class="stat-icon">❌</span>
       <div class="stat-info">
         <span class="stat-value">{{ cancelledCount }}</span>
-        <span class="stat-label">Cancelled</span>
+        <span class="stat-label">{{ 'HISTORY.cancelled' | translate }}</span>
       </div>
     </div>
     <div class="stat-card total">
       <span class="stat-icon">💰</span>
       <div class="stat-info">
         <span class="stat-value">{{ totalSpent | currency:'TRY':'₺':'1.2-2' }}</span>
-        <span class="stat-label">Total Spent</span>
+        <span class="stat-label">{{ 'HISTORY.totalSpent' | translate }}</span>
       </div>
     </div>
   </div>
@@ -34,20 +34,21 @@
   <!-- Filters -->
   <div class="filters-bar" *ngIf="!isLoading && allOrders.length > 0">
     <div class="search-box">
-      <input type="text" [(ngModel)]="searchTerm" (ngModelChange)="applyFilters()" placeholder="Search by order ID, store, product..." />
+      <input type="text" [(ngModel)]="searchTerm" (ngModelChange)="applyFilters()"
+        [placeholder]="'HISTORY.searchPlaceholder' | translate" />
     </div>
     <div class="filter-tabs">
-      <button [class.active]="statusFilter === 'ALL'" (click)="statusFilter = 'ALL'; applyFilters()">All</button>
-      <button [class.active]="statusFilter === 'DELIVERED'" (click)="statusFilter = 'DELIVERED'; applyFilters()">Delivered</button>
-      <button [class.active]="statusFilter === 'CANCELLED'" (click)="statusFilter = 'CANCELLED'; applyFilters()">Cancelled</button>
-      <button class="export-btn" (click)="exportToCSV()" style="margin-left: 1rem; background: #22c55e; color: white; border: none; padding: 0.5rem 1rem; border-radius: 8px; cursor: pointer; font-weight: 600;"><i class="icon">📥</i> Export CSV</button>
+      <button [class.active]="statusFilter === 'ALL'" (click)="statusFilter = 'ALL'; applyFilters()">{{ 'HISTORY.all' | translate }}</button>
+      <button [class.active]="statusFilter === 'DELIVERED'" (click)="statusFilter = 'DELIVERED'; applyFilters()">{{ 'HISTORY.delivered' | translate }}</button>
+      <button [class.active]="statusFilter === 'CANCELLED'" (click)="statusFilter = 'CANCELLED'; applyFilters()">{{ 'HISTORY.cancelled' | translate }}</button>
+      <button class="export-btn" (click)="exportToCSV()" style="margin-left: 1rem; background: #22c55e; color: white; border: none; padding: 0.5rem 1rem; border-radius: 8px; cursor: pointer; font-weight: 600;">{{ 'HISTORY.exportCSV' | translate }}</button>
     </div>
   </div>
 
   <!-- Loading -->
   <div class="loader" *ngIf="isLoading">
     <div class="spinner"></div>
-    <p>Loading your history...</p>
+    <p>{{ 'HISTORY.loading' | translate }}</p>
   </div>
 
   <!-- Orders Table -->
@@ -55,11 +56,11 @@
     <table class="history-table">
       <thead>
         <tr>
-          <th>Order ID</th>
-          <th>Date</th>
-          <th>Items</th>
-          <th>Total</th>
-          <th>Status</th>
+          <th>{{ 'HISTORY.orderId' | translate }}</th>
+          <th>{{ 'HISTORY.date' | translate }}</th>
+          <th>{{ 'HISTORY.items' | translate }}</th>
+          <th>{{ 'HISTORY.total' | translate }}</th>
+          <th>{{ 'HISTORY.status' | translate }}</th>
           <th></th>
         </tr>
       </thead>
@@ -82,7 +83,7 @@
             </span>
           </td>
           <td>
-            <a class="details-link" [routerLink]="['/individual/orders', order.id]">View Details →</a>
+            <a class="details-link" [routerLink]="['/individual/orders', order.id]">{{ 'HISTORY.viewDetails' | translate }}</a>
           </td>
         </tr>
       </tbody>
@@ -92,13 +93,13 @@
   <!-- Empty -->
   <div class="empty-state" *ngIf="!isLoading && allOrders.length === 0">
     <div class="empty-icon">📋</div>
-    <h3>No History Yet</h3>
-    <p>Once your orders are delivered or cancelled, they'll appear here.</p>
+    <h3>{{ 'HISTORY.noHistory' | translate }}</h3>
+    <p>{{ 'HISTORY.noHistoryDesc' | translate }}</p>
   </div>
 
   <div class="empty-state" *ngIf="!isLoading && allOrders.length > 0 && filteredOrders.length === 0">
     <div class="empty-icon">🔍</div>
-    <h3>No Results Found</h3>
-    <p>Try adjusting your search or filter.</p>
+    <h3>{{ 'HISTORY.noResults' | translate }}</h3>
+    <p>{{ 'HISTORY.noResultsDesc' | translate }}</p>
   </div>
 </div>

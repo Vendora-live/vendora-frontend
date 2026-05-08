@@ -1,13 +1,13 @@
 <div class="stores-container">
     <div class="page-header">
-        <h2>Our Official Stores</h2>
-        <p>Browse products directly from your favorite vendors.</p>
+        <h2>{{ 'STORES.title' | translate }}</h2>
+        <p>{{ 'STORES.subtitle' | translate }}</p>
     </div>
 
     <!-- Loading State -->
     <div *ngIf="isLoading" class="loading-state">
         <div class="spinner"></div>
-        <p>Loading stores...</p>
+        <p>{{ 'STORES.loading' | translate }}</p>
     </div>
 
     <!-- Error State -->
@@ -18,29 +18,27 @@
     <!-- Empty State -->
     <div *ngIf="!isLoading && !errorMessage && stores.length === 0" class="empty-state">
         <i class="icon">🏪</i>
-        <p>No stores available right now.</p>
+        <p>{{ 'STORES.noStores' | translate }}</p>
     </div>
 
     <!-- Store Grid -->
     <div *ngIf="!isLoading && !errorMessage && stores.length > 0" class="store-grid">
         <div class="store-card" *ngFor="let store of stores" [routerLink]="['/individual/stores', store.id]" style="cursor: pointer;">
             <div class="store-header">
-                <div class="store-avatar">
-                   🏢
-                </div>
+                <div class="store-avatar">🏢</div>
                 <span class="status-badge" [ngClass]="store.status === 'ACTIVE' ? 'active' : 'inactive'">
                     {{ store.status }}
                 </span>
             </div>
-            
+
             <div class="store-details">
                 <h3 class="store-name">{{ store.name }}</h3>
-                <p class="store-joined" *ngIf="store.createdAt">Joined {{ store.createdAt | date:'mediumDate' }}</p>
-                <p class="store-joined" *ngIf="!store.createdAt">Recently Joined</p>
-                
+                <p class="store-joined" *ngIf="store.createdAt">{{ 'STORES.joined' | translate: {date: (store.createdAt | date:'mediumDate')} }}</p>
+                <p class="store-joined" *ngIf="!store.createdAt">{{ 'STORES.recentlyJoined' | translate }}</p>
+
                 <div class="store-footer">
                     <button class="visit-btn" [routerLink]="['/individual/stores', store.id]">
-                        Visit Store <span>→</span>
+                        {{ 'STORES.visitStore' | translate }}
                     </button>
                 </div>
             </div>
@@ -49,13 +47,13 @@
 
     <!-- Pagination -->
     <div class="pagination-controls" *ngIf="totalPages >= 0 && !isLoading && !errorMessage">
-        <button class="btn-page" (click)="prevPage()" [disabled]="pageNumber === 0">← Previous</button>
-        <span class="page-info">Page {{ pageNumber + 1 }} of {{ totalPages }}</span>
-        <button class="btn-page" (click)="nextPage()" [disabled]="pageNumber >= totalPages - 1">Next →</button>
-    
+        <button class="btn-page" (click)="prevPage()" [disabled]="pageNumber === 0">{{ 'COMMON.prevPage' | translate }}</button>
+        <span class="page-info">{{ 'COMMON.pagination' | translate: {current: pageNumber + 1, total: totalPages} }}</span>
+        <button class="btn-page" (click)="nextPage()" [disabled]="pageNumber >= totalPages - 1">{{ 'COMMON.nextPage' | translate }}</button>
+
         <div class="jump-to-page">
-            <input type="number" #pageInput min="1" [max]="totalPages" placeholder="Go to..." (keyup.enter)="goToPage(pageInput.value)" class="page-input">
-            <button class="btn-page" (click)="goToPage(pageInput.value)">Go</button>
+            <input type="number" #pageInput min="1" [max]="totalPages" [placeholder]="'COMMON.goToPage' | translate" (keyup.enter)="goToPage(pageInput.value)" class="page-input">
+            <button class="btn-page" (click)="goToPage(pageInput.value)">{{ 'COMMON.goTo' | translate }}</button>
         </div>
     </div>
 </div>

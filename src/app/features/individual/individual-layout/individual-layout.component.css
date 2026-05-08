@@ -2,6 +2,26 @@
    INDIVIDUAL LAYOUT — Cyan/Teal theme
    ================================================================ */
 
+/* ── Mobile Sidebar Overlay ───────────────────────────────── */
+.sidebar-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 199;
+  backdrop-filter: blur(2px);
+  transition: opacity 0.3s ease;
+  opacity: 0;
+}
+
+.sidebar-overlay.visible {
+  opacity: 1;
+}
+
+@media (max-width: 768px) {
+  .sidebar-overlay { display: block; }
+}
+
 .individual-layout {
   display: flex;
   height: 100vh;
@@ -240,6 +260,21 @@
   box-shadow: 0 0 12px var(--ind-accent);
 }
 
+.lang-toggle-btn {
+  height: 38px;
+  padding: 0 10px;
+  background: var(--btn-ghost-bg);
+  border: 1px solid var(--btn-ghost-border);
+  border-radius: 10px; cursor: pointer; font-size: 0.75rem; font-weight: 600;
+  display: flex; align-items: center; justify-content: center;
+  transition: all 0.22s ease; color: var(--text-muted);
+  letter-spacing: 0.05em;
+}
+.lang-toggle-btn:hover {
+  background: var(--ind-accent-hover);
+  border-color: var(--ind-accent);
+}
+
 .cart-header-btn {
   position: relative;
   width: 38px; height: 38px;
@@ -309,8 +344,8 @@
   .sidebar.open { transform: translateX(0); }
   .sidebar-close-btn { display: flex; align-items: center; justify-content: center; }
   .hamburger-btn { display: flex; }
-  .content { padding: 16px; }
-  .top-header { padding: 0 16px; }
+  .content { padding: 14px; }
+  .top-header { padding: 0 12px; }
   .user-chip { display: none; }
 
   /* Mobile brand */
@@ -343,6 +378,13 @@
 
   /* Hide desktop header-title text on mobile to avoid overlap */
   .header-title { display: none; }
+}
+
+@media (max-width: 400px) {
+  .content { padding: 10px; }
+  .top-header { padding: 0 8px; gap: 8px; }
+  .lang-toggle-btn, .theme-toggle-btn { width: 34px; height: 34px; }
+  .cart-header-btn { width: 34px; height: 34px; }
 }
 
 /* ── Toast Notification ── */

@@ -112,12 +112,7 @@ export class ChatbotComponent implements OnInit {
     }
 
     private getStoreId(): number | null {
-        const token = this.authService.getAccessToken();
-        if (!token) return null;
-        try {
-            const payload = JSON.parse(atob(token.split('.')[1]));
-            return payload.storeId ?? payload.store_id ?? null;
-        } catch { return null; }
+        return this.authService.getStoreId();
     }
 
     private setExampleQuestions(): void {

@@ -6,16 +6,17 @@ import { ShipmentService } from '../../../core/services/shipment.service';
 import { ReviewService } from '../../../core/services/review.service';
 import { ProductService } from '../../../core/services/product.service';
 import { ToastService } from '../../../core/services/toast.service';
-import { DtoOrder, OrderStatus } from '../../../shared/models/order';
+import { DtoOrder, DtoOrderItem, OrderStatus } from '../../../shared/models/order';
 import { DtoShipment, ShipmentStatus } from '../../../shared/models/shipment';
 import { catchError } from 'rxjs/operators';
 import { of } from 'rxjs';
 import { ReviewWidgetComponent } from '../../../shared/components/review-widget/review-widget.component';
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-ind-order-detail',
   standalone: true,
-  imports: [CommonModule, RouterLink, ReviewWidgetComponent],
+  imports: [CommonModule, RouterLink, ReviewWidgetComponent, TranslateModule],
   templateUrl: './ind-order-detail.component.html',
   styleUrl: './ind-order-detail.component.css'
 })
@@ -72,7 +73,7 @@ export class IndOrderDetailComponent implements OnInit {
       this.order = order;
       if (order) {
         if (order.items) {
-          this.loadProductImages(order.items.map(i => i.productId));
+          this.populateImageMap(order.items);
         }
         if (order.subOrders) {
           order.subOrders.forEach(sub => {
@@ -80,7 +81,7 @@ export class IndOrderDetailComponent implements OnInit {
               this.loadShipmentForSubOrder(sub.id);
             }
             if (sub.items) {
-              this.loadProductImages(sub.items.map(i => i.productId));
+              this.populateImageMap(sub.items);
             }
           });
         }
@@ -89,17 +90,10 @@ export class IndOrderDetailComponent implements OnInit {
     });
   }
 
-  loadProductImages(productIds: number[]): void {
-    const uniqueIds = [...new Set(productIds)];
-    uniqueIds.forEach(id => {
-      if (!this.productImagesMap[id]) {
-        this.productService.getProductById(id).pipe(
-          catchError(() => of(null))
-        ).subscribe(product => {
-          if (product && product.imageUrl) {
-            this.productImagesMap[id] = product.imageUrl;
-          }
-        });
+  private populateImageMap(items: DtoOrderItem[]): void {
+    items.forEach(item => {
+      if (item.productImageUrl && !this.productImagesMap[item.productId]) {
+        this.productImagesMap[item.productId] = item.productImageUrl;
       }
     });
   }
@@ -152,9 +146,6 @@ export class IndOrderDetailComponent implements OnInit {
   }
 
   getImageUrl(url: string | null | undefined): string {
-    if (!url) return 'assets/placeholder-image.webp';
-    if (url.startsWith('http://') || url.startsWith('https://')) return url;
-    if (url.startsWith('assets/')) return url;
-    return `assets/images/${url}`;
+    return this.productService.getImageUrl(url);
   }
 }

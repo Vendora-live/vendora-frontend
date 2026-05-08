@@ -101,6 +101,7 @@
   background: var(--card-bg);
   border: 1px solid var(--border-color);
   border-radius: 12px; padding: 20px;
+  overflow-x: auto;
 }
 
 .data-table { width: 100%; border-collapse: collapse; }
@@ -142,4 +143,14 @@
 
 @media (max-width: 768px) {
   .charts-row { grid-template-columns: 1fr; }
+  .page-header h2 { font-size: 1.4rem; }
+  .refresh-btn { min-height: 44px; }
+  .data-table { min-width: 480px; }
+}
+
+@media (max-width: 480px) {
+  .stat-value { font-size: 1.1rem; }
+  .stat-card { padding: 14px; }
+  .chart-wrapper { height: 220px; }
+  .chart-wrapper.doughnut { height: 240px; }
 }

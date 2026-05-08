@@ -1,6 +1,7 @@
 import { Routes } from '@angular/router';
 import { authGuard } from './core/guards/auth.guard';
 import { roleGuard } from './core/guards/role.guard';
+import { homeGuard } from './core/guards/home.guard';
 
 // Auth sayfaları — eager (ilk yüklemede gerekli)
 import { LoginComponent } from './features/auth/login/login.component';
@@ -12,7 +13,7 @@ import { ForbiddenComponent } from './features/auth/forbidden/forbidden.componen
 import { OAuth2CallbackComponent } from './features/auth/oauth2-callback/oauth2-callback.component';
 
 export const routes: Routes = [
-    { path: '', redirectTo: 'login', pathMatch: 'full' },
+    { path: '', canActivate: [homeGuard], component: ForbiddenComponent },
     { path: 'login', component: LoginComponent },
     { path: 'register', component: RegisterComponent },
     { path: 'forgot-password', component: ForgotPasswordComponent },

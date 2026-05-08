@@ -1,38 +1,33 @@
-import { HttpErrorResponse, HttpEvent, HttpHandler, HttpInterceptor, HttpRequest } from "@angular/common/http";
-import { Injectable } from "@angular/core";
-import { BehaviorSubject, catchError, filter, Observable, switchMap, take, throwError } from "rxjs";
-import { AuthService } from "../services/auth.service";
-import { Router } from "@angular/router";
-import { AuthResponse } from "../../shared/models/auth-response";
-import { Token } from "@angular/compiler";
-
+import { HttpErrorResponse, HttpEvent, HttpHandler, HttpInterceptor, HttpRequest } from '@angular/common/http';
+import { inject, Injectable, Injector } from '@angular/core';
+import { BehaviorSubject, catchError, filter, Observable, switchMap, take, throwError } from 'rxjs';
+import { AuthService } from '../services/auth.service';
+import { Router } from '@angular/router';
 
 @Injectable()
 export class AuthInterceptor implements HttpInterceptor {
 
     private isRefreshing = false;
-    private refreshSubject = new BehaviorSubject<string | null>(null);
+    private refreshDone$ = new BehaviorSubject<boolean | null>(null);
 
-    constructor(private authService: AuthService, private router: Router) { }
+    private injector = inject(Injector);
+    private router = inject(Router);
+
+    private get authService(): AuthService {
+        return this.injector.get(AuthService);
+    }
 
     intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
+        // Attach withCredentials to every request so cookies are sent cross-origin
+        const credReq = req.clone({ withCredentials: true });
 
-        if (req.url.includes('/auth/refresh') ||
-            req.url.includes('/auth/login') ||
-            req.url.includes('/auth/register')) {
-
-            return next.handle(req);
-        }
-
-        const token = this.authService.getAccessToken();
-        if (token) {
-            req = this.addToken(req, token);
-        }
-
-        return next.handle(req).pipe(
+        return next.handle(credReq).pipe(
             catchError(error => {
-                if (error instanceof HttpErrorResponse && error.status === 401) {
-                    return this.handle401(req, next);
+                if (error instanceof HttpErrorResponse && error.status === 401
+                    && !req.url.includes('/auth/refresh')
+                    && !req.url.includes('/auth/login')
+                    && this.authService.isAuthenticated()) {
+                    return this.handle401(credReq, next);
                 }
                 return throwError(() => error);
             })
@@ -42,13 +37,14 @@ export class AuthInterceptor implements HttpInterceptor {
     private handle401(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
         if (!this.isRefreshing) {
             this.isRefreshing = true;
-            this.refreshSubject.next(null);
+            this.refreshDone$.next(null);
 
             return this.authService.refreshToken().pipe(
-                switchMap((auth: AuthResponse) => {
+                switchMap(() => {
                     this.isRefreshing = false;
-                    this.refreshSubject.next(auth.accessToken);
-                    return next.handle(this.addToken(req, auth.accessToken));
+                    this.refreshDone$.next(true);
+                    // Cookie is now refreshed — browser sends it automatically
+                    return next.handle(req);
                 }),
                 catchError(error => {
                     this.isRefreshing = false;
@@ -59,17 +55,11 @@ export class AuthInterceptor implements HttpInterceptor {
             );
         }
 
-        return this.refreshSubject.pipe(
-            filter(token => token !== null),
+        // Queue concurrent 401s until refresh completes
+        return this.refreshDone$.pipe(
+            filter(done => done !== null),
             take(1),
-            switchMap(token => next.handle(this.addToken(req, token!)))
+            switchMap(() => next.handle(req))
         );
-    }
-
-
-    private addToken(req: HttpRequest<any>, token: string): HttpRequest<any> {
-        return req.clone({
-            setHeaders: { Authorization: `Bearer ${token}` }
-        });
     }
 }

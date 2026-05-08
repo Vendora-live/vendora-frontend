@@ -1,12 +1,12 @@
 <div class="profile-container">
   <div class="profile-header">
-    <h2>Profile Settings</h2>
-    <p class="header-sub">Manage your personal information and membership tier.</p>
+    <h2>{{ 'PROFILE.title' | translate }}</h2>
+    <p class="header-sub">{{ 'PROFILE.subtitle' | translate }}</p>
   </div>
 
   <div class="loader" *ngIf="isLoading">
     <div class="spinner"></div>
-    <p>Loading your profile...</p>
+    <p>{{ 'PROFILE.loading' | translate }}</p>
   </div>
 
   <div class="profile-content" *ngIf="!isLoading">
@@ -15,41 +15,41 @@
     <div class="membership-card" [ngClass]="getMembershipClass(profile?.membershipType)">
       <div class="membership-icon">{{ getMembershipIcon(profile?.membershipType) }}</div>
       <div class="membership-info">
-        <span class="membership-label">Membership</span>
+        <span class="membership-label">{{ 'PROFILE.membership' | translate }}</span>
         <span class="membership-type">{{ profile?.membershipType || 'STANDARD' }}</span>
       </div>
       <button class="upgrade-btn"
               *ngIf="canUpgrade(profile?.membershipType)"
               (click)="openUpgradeModal()"
               [disabled]="isUpgrading">
-        Upgrade
+        {{ 'PROFILE.upgrade' | translate }}
       </button>
-      <span class="max-tier" *ngIf="!canUpgrade(profile?.membershipType)">Max Tier</span>
+      <span class="max-tier" *ngIf="!canUpgrade(profile?.membershipType)">{{ 'PROFILE.maxTier' | translate }}</span>
     </div>
 
     <!-- Profile Info Card -->
     <div class="info-card">
       <div class="card-top">
-        <h3>Personal Information</h3>
-        <button class="edit-toggle-btn" *ngIf="!isEditing" (click)="startEdit()">Edit</button>
+        <h3>{{ 'PROFILE.personalInfo' | translate }}</h3>
+        <button class="edit-toggle-btn" *ngIf="!isEditing" (click)="startEdit()">{{ 'COMMON.edit' | translate }}</button>
       </div>
 
       <!-- View Mode -->
       <div class="info-grid" *ngIf="!isEditing">
         <div class="info-row">
-          <span class="info-label">Age</span>
+          <span class="info-label">{{ 'PROFILE.age' | translate }}</span>
           <span class="info-value">{{ profile?.age || '—' }}</span>
         </div>
         <div class="info-row">
-          <span class="info-label">City</span>
+          <span class="info-label">{{ 'PROFILE.city' | translate }}</span>
           <span class="info-value">{{ profile?.city || '—' }}</span>
         </div>
         <div class="info-row">
-          <span class="info-label">State / Province</span>
+          <span class="info-label">{{ 'PROFILE.state' | translate }}</span>
           <span class="info-value">{{ profile?.state || '—' }}</span>
         </div>
         <div class="info-row">
-          <span class="info-label">Country</span>
+          <span class="info-label">{{ 'PROFILE.country' | translate }}</span>
           <span class="info-value">{{ profile?.country || '—' }}</span>
         </div>
       </div>
@@ -57,27 +57,27 @@
       <!-- Edit Mode -->
       <div class="edit-form" *ngIf="isEditing">
         <div class="form-row">
-          <label>Age</label>
-          <input type="number" [(ngModel)]="editForm.age" placeholder="Your age" min="1" max="120">
+          <label>{{ 'PROFILE.age' | translate }}</label>
+          <input type="number" [(ngModel)]="editForm.age" [placeholder]="'PROFILE.agePlaceholder' | translate" min="1" max="120">
         </div>
         <div class="form-row">
-          <label>City</label>
-          <input type="text" [(ngModel)]="editForm.city" placeholder="Your city">
+          <label>{{ 'PROFILE.city' | translate }}</label>
+          <input type="text" [(ngModel)]="editForm.city" [placeholder]="'PROFILE.cityPlaceholder' | translate">
         </div>
         <div class="form-row">
-          <label>State / Province</label>
-          <input type="text" [(ngModel)]="editForm.state" placeholder="Your state or province">
+          <label>{{ 'PROFILE.state' | translate }}</label>
+          <input type="text" [(ngModel)]="editForm.state" [placeholder]="'PROFILE.statePlaceholder' | translate">
         </div>
         <div class="form-row">
-          <label>Country</label>
-          <input type="text" [(ngModel)]="editForm.country" placeholder="Your country">
+          <label>{{ 'PROFILE.country' | translate }}</label>
+          <input type="text" [(ngModel)]="editForm.country" [placeholder]="'PROFILE.countryPlaceholder' | translate">
         </div>
 
         <div class="form-actions">
           <button class="save-btn" (click)="saveProfile()" [disabled]="isSaving">
-            {{ isSaving ? 'Saving...' : 'Save Changes' }}
+            {{ isSaving ? ('COMMON.saving' | translate) : ('PROFILE.saveChanges' | translate) }}
           </button>
-          <button class="cancel-btn" (click)="cancelEdit()">Cancel</button>
+          <button class="cancel-btn" (click)="cancelEdit()">{{ 'COMMON.cancel' | translate }}</button>
         </div>
       </div>
     </div>
@@ -89,20 +89,20 @@
 <div class="modal-overlay" *ngIf="showUpgradeModal" (click)="closeUpgradeModal()">
   <div class="modal-content" (click)="$event.stopPropagation()">
     <div class="modal-header">
-      <h3>Upgrade Membership</h3>
+      <h3>{{ 'PROFILE.upgradeMembership' | translate }}</h3>
       <button class="close-btn" (click)="closeUpgradeModal()">×</button>
     </div>
     <div class="modal-body">
-      <p>Select your new membership tier below. Upgrading gives you access to better discounts and priority shipping!</p>
-      
+      <p>{{ 'PROFILE.upgradeDesc' | translate }}</p>
+
       <div class="tier-options">
         <div class="tier-card" *ngFor="let tier of getAvailableUpgrades()" [ngClass]="getMembershipClass(tier)">
           <div class="tier-icon">{{ getMembershipIcon(tier) }}</div>
           <h4>{{ tier }}</h4>
-          <button class="upgrade-btn" 
+          <button class="upgrade-btn"
                   (click)="upgradeMembership(tier)"
                   [disabled]="isUpgrading">
-            {{ isUpgrading ? 'Processing...' : 'Upgrade to ' + tier }}
+            {{ isUpgrading ? ('COMMON.processing' | translate) : ('PROFILE.upgrade' | translate) + ' to ' + tier }}
           </button>
         </div>
       </div>

@@ -65,7 +65,7 @@
       <tbody>
         <tr *ngFor="let product of filteredProducts" [class.highlight-row]="editingProductId === product.id">
           <td class="product-cell">
-            <img [src]="getImageUrl(product.imageUrl)" alt="{{ product.name }}" class="product-thumb" />
+            <img [src]="getImageUrl(product)" alt="{{ product.name }}" class="product-thumb" />
             <div class="product-info">
               <span class="product-name">{{ product.name }}</span>
               <span class="product-category">{{ product.categoryName || 'Uncategorized' }}</span>

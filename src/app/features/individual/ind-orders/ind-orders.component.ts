@@ -8,13 +8,14 @@ import { DtoOrder, OrderStatus } from '../../../shared/models/order';
 import { catchError, switchMap, takeWhile } from 'rxjs/operators';
 import { of, interval, Subscription } from 'rxjs';
 import { environment } from '../../../../environments/environment';
+import { TranslateModule } from '@ngx-translate/core';
 
 declare var Stripe: any;
 
 @Component({
   selector: 'app-ind-orders',
   standalone: true,
-  imports: [CommonModule, RouterLink],
+  imports: [CommonModule, RouterLink, TranslateModule],
   templateUrl: './ind-orders.component.html',
   styleUrl: './ind-orders.component.css'
 })

@@ -12,54 +12,54 @@
     <div class="sidebar-header">
       <div class="brand-icon">⬡</div>
       <div class="brand-text">
-        <span class="brand-name">Admin Panel</span>
-        <span class="brand-sub">Management Console</span>
+        <span class="brand-name">{{ 'ADMIN.panel' | translate }}</span>
+        <span class="brand-sub">{{ 'ADMIN.console' | translate }}</span>
       </div>
     </div>
 
     <nav class="sidebar-nav">
       <a routerLink="/admin/dashboard" routerLinkActive="active" (click)="closeSidebar()">
         <span class="nav-icon">📊</span>
-        <span class="nav-label">Dashboard</span>
+        <span class="nav-label">{{ 'ADMIN.nav.dashboard' | translate }}</span>
       </a>
       <a routerLink="/admin/users" routerLinkActive="active" (click)="closeSidebar()">
         <span class="nav-icon">👥</span>
-        <span class="nav-label">Users</span>
+        <span class="nav-label">{{ 'ADMIN.nav.users' | translate }}</span>
       </a>
       <a routerLink="/admin/carts" routerLinkActive="active" (click)="closeSidebar()">
         <span class="nav-icon">🛒</span>
-        <span class="nav-label">Carts</span>
+        <span class="nav-label">{{ 'ADMIN.nav.carts' | translate }}</span>
       </a>
       <a routerLink="/admin/stores" routerLinkActive="active" (click)="closeSidebar()">
         <span class="nav-icon">🏪</span>
-        <span class="nav-label">Stores</span>
+        <span class="nav-label">{{ 'ADMIN.nav.stores' | translate }}</span>
       </a>
       <a routerLink="/admin/categories" routerLinkActive="active" (click)="closeSidebar()">
         <span class="nav-icon">📂</span>
-        <span class="nav-label">Categories</span>
+        <span class="nav-label">{{ 'ADMIN.nav.categories' | translate }}</span>
       </a>
       <a routerLink="/admin/corporate-requests" routerLinkActive="active" (click)="closeSidebar()">
         <span class="nav-icon">🏢</span>
-        <span class="nav-label">Corp. Requests</span>
+        <span class="nav-label">{{ 'ADMIN.nav.corpRequests' | translate }}</span>
       </a>
       <a routerLink="/admin/orders" routerLinkActive="active" (click)="closeSidebar()">
         <span class="nav-icon">📦</span>
-        <span class="nav-label">Orders</span>
+        <span class="nav-label">{{ 'ADMIN.nav.orders' | translate }}</span>
       </a>
       <a routerLink="/admin/audit-logs" routerLinkActive="active" (click)="closeSidebar()">
         <span class="nav-icon">🛡️</span>
-        <span class="nav-label">Audit Logs</span>
+        <span class="nav-label">{{ 'ADMIN.nav.auditLogs' | translate }}</span>
       </a>
       <a routerLink="/admin/settings" routerLinkActive="active" (click)="closeSidebar()">
         <span class="nav-icon">⚙️</span>
-        <span class="nav-label">Settings</span>
+        <span class="nav-label">{{ 'ADMIN.nav.settings' | translate }}</span>
       </a>
     </nav>
 
     <div class="sidebar-footer">
       <button class="logout-btn" (click)="logout()">
         <span class="nav-icon">🚪</span>
-        <span class="nav-label">Logout</span>
+        <span class="nav-label">{{ 'COMMON.logout' | translate }}</span>
       </button>
     </div>
   </aside>
@@ -75,12 +75,17 @@
 
       <div class="header-title">
         <span class="header-accent-bar"></span>
-        <h3>Welcome, {{ admin_email_parsed }}</h3>
+        <h3>{{ 'ADMIN.welcome' | translate: {name: admin_email_parsed} }}</h3>
       </div>
 
       <div class="header-actions">
+        <!-- Language Toggle -->
+        <button class="lang-toggle-btn" (click)="toggleLang()">
+          {{ langService.currentLang() === 'tr' ? 'EN' : 'TR' }}
+        </button>
         <!-- Theme Toggle -->
-        <button class="theme-toggle-btn" (click)="themeService.toggle()" [title]="themeService.isDark() ? 'Switch to Light Mode' : 'Switch to Dark Mode'">
+        <button class="theme-toggle-btn" (click)="themeService.toggle()"
+          [title]="(themeService.isDark() ? 'THEME.switchToLight' : 'THEME.switchToDark') | translate">
           <span *ngIf="themeService.isDark()">☀️</span>
           <span *ngIf="!themeService.isDark()">🌙</span>
         </button>

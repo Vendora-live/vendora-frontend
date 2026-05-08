@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, map } from 'rxjs';
-import { Product, ProductRequest } from '../../shared/models/product';
+import { Product, ProductImage, ProductRequest } from '../../shared/models/product';
 import { ApiResponse } from '../../shared/models/api-response';
 import { environment } from '../../../environments/environment';
 import { RestPageableEntity, RestPageableRequest, buildPageParams } from '../../shared/models/pageable';
@@ -52,5 +52,40 @@ export class ProductService {
             map(() => void 0)
         );
     }
-}
 
+    uploadProductImages(productId: number, files: File[]): Observable<ProductImage[]> {
+        const formData = new FormData();
+        files.forEach(file => formData.append('files', file));
+        return this.http.post<ApiResponse<ProductImage[]>>(`${this.apiUrl}/${productId}/images`, formData).pipe(
+            map(res => res.payload as ProductImage[])
+        );
+    }
+
+    deleteProductImage(productId: number, imageId: number): Observable<void> {
+        return this.http.delete<ApiResponse<void>>(`${this.apiUrl}/${productId}/images/${imageId}`).pipe(
+            map(() => void 0)
+        );
+    }
+
+    setPrimaryImage(productId: number, imageId: number): Observable<Product> {
+        return this.http.patch<ApiResponse<Product>>(`${this.apiUrl}/${productId}/images/${imageId}/primary`, {}).pipe(
+            map(res => res.payload as Product)
+        );
+    }
+
+    getImageUrl(url: string | null | undefined): string {
+        if (!url) return 'assets/placeholder-product.png';
+        if (url.startsWith('http://') || url.startsWith('https://')) return url;
+        if (url.startsWith('/uploads/')) return `${environment.baseUrl.replace('/api', '')}${url}`;
+        if (url.startsWith('assets/')) return url;
+        return `assets/images/${url}`;
+    }
+
+    getPrimaryImageUrl(product: Product): string {
+        const primary = product.images?.find(i => i.isPrimary)?.imageUrl
+            ?? product.images?.[0]?.imageUrl
+            ?? product.primaryImageUrl
+            ?? null;
+        return this.getImageUrl(primary);
+    }
+}

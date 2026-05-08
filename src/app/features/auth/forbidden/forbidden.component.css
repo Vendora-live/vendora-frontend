@@ -143,3 +143,15 @@
     color: #f0f0f0;
     transform: translateY(-1px);
 }
+
+@media (max-width: 480px) {
+  .code-badge { font-size: 6rem; letter-spacing: -2px; }
+  .title { font-size: 1.6rem; }
+  .content { padding: 2rem 1.25rem; }
+  .btn-primary, .btn-secondary { min-height: 44px; }
+}
+
+@media (max-width: 380px) {
+  .code-badge { font-size: 4.5rem; letter-spacing: -1px; }
+  .title { font-size: 1.3rem; }
+}

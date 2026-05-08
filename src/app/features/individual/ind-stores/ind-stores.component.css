@@ -193,7 +193,13 @@
 .visit-btn span { transition: transform 0.2s; }
 .visit-btn:hover span { transform: translateX(4px); }
 
+@media (max-width: 768px) {
+  .store-grid { grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 14px; }
+  .page-header h2 { font-size: 1.4rem; }
+}
+
 @media (max-width: 480px) {
   .store-grid { grid-template-columns: 1fr; }
   .page-header h2 { font-size: 1.3rem; }
+  .visit-btn { min-height: 44px; width: 100%; justify-content: center; }
 }

@@ -235,6 +235,7 @@
   .history-table th:nth-child(3),
   .history-table td:nth-child(3) { display: none; }
   .filter-tabs { flex-wrap: wrap; }
+  .filter-tabs button { min-height: 44px; }
   .stats-row { grid-template-columns: 1fr 1fr; }
   .page-header h2 { font-size: 1.4rem; }
 }
@@ -245,4 +246,5 @@
   .history-table { min-width: 420px; }
   .filters-bar { flex-direction: column; align-items: stretch; }
   .search-box { min-width: 0; }
+  .details-link { min-height: 44px; display: inline-flex; align-items: center; }
 }

@@ -4,10 +4,12 @@ import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { ReactiveFormsModule, FormBuilder, Validators } from '@angular/forms';
 import { extractErrorMessage } from '../../../core/utils/error.util';
 import { environment } from '../../../../environments/environment';
+import { TranslateModule } from '@ngx-translate/core';
+import { LanguageService } from '../../../core/services/language.service';
 
 @Component({
   selector: 'app-login',
-  imports: [ReactiveFormsModule, RouterLink],
+  imports: [ReactiveFormsModule, RouterLink, TranslateModule],
   templateUrl: './login.component.html',
   styleUrl: './login.component.css'
 })
@@ -16,6 +18,7 @@ export class LoginComponent implements OnInit {
   private authService = inject(AuthService);
   private router = inject(Router);
   private route = inject(ActivatedRoute);
+  langService = inject(LanguageService);
 
   loginForm = this.fb.group({
     email: ['', [Validators.required, Validators.email]],
@@ -35,10 +38,6 @@ export class LoginComponent implements OnInit {
 
   loginWithGoogle(): void {
     window.location.href = `${environment.serverUrl}/oauth2/authorization/google`;
-  }
-
-  loginWithGitHub(): void {
-    window.location.href = `${environment.serverUrl}/oauth2/authorization/github`;
   }
 
   onLogin() {
