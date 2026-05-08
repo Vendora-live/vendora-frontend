@@ -74,9 +74,9 @@ export class ProductService {
     }
 
     getImageUrl(url: string | null | undefined): string {
-        if (!url) return 'assets/placeholder-product.png';
+        if (!url) return 'assets/placeholder-product.svg';
         if (url.startsWith('http://') || url.startsWith('https://')) return url;
-        if (url.startsWith('/uploads/')) return `${environment.baseUrl.replace('/api', '')}${url}`;
+        if (url.startsWith('/uploads/')) return `${environment.serverUrl}${url}`;
         if (url.startsWith('assets/')) return url;
         return `assets/images/${url}`;
     }
