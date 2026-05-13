@@ -12,6 +12,14 @@ export interface ChatHistoryItem {
     updatedAt: string;
 }
 
+export interface StoredMessage {
+    role: string;
+    content: string;
+    sqlQuery?: string | null;
+    queryTimeMs?: number;
+    timestamp: string;
+}
+
 interface ApiResponse<T> {
     status: number;
     payload: T;
@@ -54,5 +62,15 @@ export class ChatHistoryService {
 
     delete(id: number): Observable<void> {
         return this.http.delete<void>(`${this.baseUrl}/${id}`);
+    }
+
+    getMessages(historyId: number): Observable<StoredMessage[]> {
+        return this.http.get<ApiResponse<StoredMessage[]>>(
+            `${this.baseUrl}/${historyId}/messages`
+        ).pipe(map(res => res.payload ?? []));
+    }
+
+    saveMessages(historyId: number, messages: StoredMessage[]): Observable<void> {
+        return this.http.post<void>(`${this.baseUrl}/${historyId}/messages`, messages);
     }
 }

@@ -3,7 +3,7 @@ import { CommonModule, DecimalPipe } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { AiAgentService, AiResponse } from '../../core/services/ai-agent.service';
 import { AuthService } from '../../core/services/auth.service';
-import { ChatHistoryService, ChatHistoryItem } from '../../core/services/chat-history.service';
+import { ChatHistoryService, ChatHistoryItem, StoredMessage } from '../../core/services/chat-history.service';
 import { ChatHistorySidebarComponent } from './chat-history-sidebar/chat-history-sidebar.component';
 import * as XLSX from 'xlsx';
 import jsPDF from 'jspdf';
@@ -109,6 +109,10 @@ export class ChatbotComponent implements OnInit {
         const email      = this.authService.getCurrentUserEmail() || '';
         this.displayName = email.split('@')[0] || 'Kullanıcı';
         this.setExampleQuestions();
+
+        Object.keys(localStorage)
+            .filter(k => k.startsWith('chat_msgs_'))
+            .forEach(k => localStorage.removeItem(k));
     }
 
     private getStoreId(): number | null {
@@ -308,32 +312,43 @@ export class ChatbotComponent implements OnInit {
     onHistorySelected(item: ChatHistoryItem): void {
         this.isSidebarOpen = false;
         this.currentHistoryId = item.id;
-
-        const stored = localStorage.getItem(`chat_msgs_${item.id}`);
-        if (stored) {
-            try {
-                const parsed = JSON.parse(stored);
-                this.messages = parsed.map((m: ChatMessage) => ({ ...m, timestamp: new Date(m.timestamp) }));
-                this.userInput = '';
-                this.scrollToBottom();
-                return;
-            } catch { /* fall through to fallback */ }
-        }
-
-        // Fallback for old entries without stored messages
         this.messages = [];
-        this.messages.push({
-            role: 'user',
-            content: item.initialQuery,
-            timestamp: item.createdAt ? new Date(item.createdAt) : new Date()
+
+        this.historyService.getMessages(item.id).subscribe({
+            next: (stored: StoredMessage[]) => {
+                if (stored.length > 0) {
+                    this.messages = stored.map(m => ({
+                        role: m.role as 'user' | 'ai' | 'guardrail',
+                        content: m.content,
+                        sqlQuery: m.sqlQuery ?? null,
+                        queryTimeMs: m.queryTimeMs,
+                        timestamp: new Date(m.timestamp)
+                    }));
+                } else {
+                    this.messages.push({
+                        role: 'user',
+                        content: item.initialQuery,
+                        timestamp: item.createdAt ? new Date(item.createdAt) : new Date()
+                    });
+                    this.messages.push({
+                        role: 'ai',
+                        content: `📂 No saved response found for this session. Click Send to re-run this query.`,
+                        timestamp: new Date()
+                    });
+                    this.userInput = item.initialQuery;
+                }
+                this.scrollToBottom();
+            },
+            error: () => {
+                this.messages.push({
+                    role: 'user',
+                    content: item.initialQuery,
+                    timestamp: item.createdAt ? new Date(item.createdAt) : new Date()
+                });
+                this.userInput = item.initialQuery;
+                this.scrollToBottom();
+            }
         });
-        this.messages.push({
-            role: 'ai',
-            content: `📂 No saved response found for this session. Click Send to re-run this query.`,
-            timestamp: new Date()
-        });
-        this.userInput = item.initialQuery;
-        this.scrollToBottom();
     }
 
     onNewChatFromSidebar(): void {
@@ -351,9 +366,16 @@ export class ChatbotComponent implements OnInit {
         });
     }
 
-    private saveMessagesToStorage(): void {
+    private saveMessagesToBackend(): void {
         if (!this.currentHistoryId) return;
-        localStorage.setItem(`chat_msgs_${this.currentHistoryId}`, JSON.stringify(this.messages));
+        const payload: StoredMessage[] = this.messages.map(m => ({
+            role: m.role,
+            content: m.content,
+            sqlQuery: m.sqlQuery ?? null,
+            queryTimeMs: m.queryTimeMs,
+            timestamp: m.timestamp.toISOString()
+        }));
+        this.historyService.saveMessages(this.currentHistoryId, payload).subscribe();
     }
 
     sendMessage(): void {
@@ -375,7 +397,7 @@ export class ChatbotComponent implements OnInit {
                 this.stopStreamingStatus();
                 this.messages.push(this.buildMessage(res, query, queryTimeMs));
                 this.isTyping = false;
-                this.saveMessagesToStorage();
+                this.saveMessagesToBackend();
                 this.scrollToBottom();
             },
             error: (err) => {
