@@ -78,6 +78,7 @@ export class ProductService {
         if (url.startsWith('http://') || url.startsWith('https://')) return url;
         if (url.startsWith('/uploads/')) return `${environment.serverUrl}${url}`;
         if (url.startsWith('assets/')) return url;
+        if (!url.includes('/')) return `${environment.serverUrl}/uploads/${url}`;
         return `assets/images/${url}`;
     }
 

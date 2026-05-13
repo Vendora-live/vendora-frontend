@@ -121,17 +121,9 @@ export class AuthService {
         this.languageService.syncFromUserMeta(meta);
     }
 
-    /**
-     * On logout: backend expires all cookies, but we re-write user_meta
-     * with only theme/language so preferences survive until next login.
-     */
     private preservePrefsAndClearSession() {
-        const meta = this.parseUserMeta();
-        if (meta?.theme || meta?.language) {
-            const prefs = JSON.stringify({ theme: meta.theme, language: meta.language });
-            const encoded = btoa(prefs);
-            document.cookie = `user_meta=${encoded}; path=/; SameSite=Strict; max-age=${30 * 24 * 3600}`;
-        }
+        // Theme and language are already persisted in localStorage by ThemeService and LanguageService.
+        // Do NOT rewrite user_meta cookie here — stale cookie fragments cause login confusion.
     }
 
     parseUserMeta(): UserMeta | null {
