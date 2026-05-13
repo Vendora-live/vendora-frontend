@@ -57,7 +57,8 @@
       "orders": "Orders",
       "analytics": "Analytics",
       "reviews": "Reviews",
-      "shipments": "Shipments"
+      "shipments": "Shipments",
+      "refunds": "Refund Requests"
     }
   },
   "IND": {
@@ -72,6 +73,7 @@
       "analytics": "Spending Analytics",
       "profile": "Profile Settings",
       "addresses": "My Addresses",
+      "myRefunds": "My Refunds",
       "becomeCorporate": "Become Corporate"
     }
   },
@@ -249,14 +251,21 @@
     "itemsInPackage": "Items in this package",
     "rateProduct": "Rate Product",
     "rated": "Rated",
+    "requestRefund": "Request Refund",
+    "refundModalTitle": "Request a Refund",
+    "refundReasonLabel": "Reason for Return",
+    "refundReasonPlaceholder": "Describe why you'd like to return this item...",
+    "submitRefund": "Submit Request",
+    "submittingRefund": "Submitting...",
     "notFound": "Order Not Found",
     "notFoundDesc": "The order you're looking for could not be found."
   },
   "HISTORY": {
     "title": "Purchase History",
-    "subtitle": "A complete record of your delivered and cancelled orders.",
+    "subtitle": "A complete record of all your paid and completed orders.",
     "delivered": "Delivered",
     "cancelled": "Cancelled",
+    "inProgress": "In Progress",
     "totalSpent": "Total Spent",
     "searchPlaceholder": "Search by order ID, store, product...",
     "all": "All",
@@ -269,7 +278,7 @@
     "status": "Status",
     "viewDetails": "View Details →",
     "noHistory": "No History",
-    "noHistoryDesc": "Your orders will appear here once they are delivered or cancelled.",
+    "noHistoryDesc": "Your orders will appear here once you complete a payment.",
     "noResults": "No Results Found",
     "noResultsDesc": "Try changing your search or filter."
   },
@@ -394,6 +403,42 @@
     "express": "Express Delivery",
     "sameDay": "Same-Day Delivery",
     "confirmShipment": "Confirm Shipment"
+  },
+  "MY_REFUNDS": {
+    "title": "My Refund Requests",
+    "subtitle": "Track the status of your return and refund requests.",
+    "loading": "Loading refund requests...",
+    "noRefunds": "No Refund Requests",
+    "noRefundsDesc": "You haven't submitted any refund requests yet.",
+    "product": "Product",
+    "orderLabel": "Order #{{id}}",
+    "amount": "Refund Amount",
+    "status": "Status",
+    "reason": "Return Reason",
+    "requestedOn": "Requested On",
+    "rejectionReason": "Rejection Reason"
+  },
+  "CORP_REFUNDS": {
+    "title": "Refund Requests",
+    "subtitle": "Review and manage return requests from your customers.",
+    "loading": "Loading refund requests...",
+    "noRefunds": "No Refund Requests",
+    "noRefundsDesc": "No refund requests for your store right now.",
+    "product": "Product",
+    "orderLabel": "Order #{{id}}",
+    "amount": "Amount",
+    "status": "Status",
+    "reason": "Customer Reason",
+    "requestedOn": "Date",
+    "approve": "Approve",
+    "reject": "Reject",
+    "rejectionReason": "Rejection Reason",
+    "rejectModalTitle": "Reject Refund Request",
+    "rejectReasonLabel": "Reason for Rejection",
+    "rejectReasonPlaceholder": "Explain why you are rejecting this request...",
+    "confirmReject": "Confirm Rejection",
+    "approving": "Approving...",
+    "rejecting": "Rejecting..."
   },
   "ADMIN_DASH": {
     "title": "Admin Dashboard",

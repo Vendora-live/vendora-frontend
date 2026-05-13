@@ -87,7 +87,8 @@ export class IndOrdersComponent implements OnInit, OnDestroy {
       })
     ).subscribe(res => {
       const activeStatuses: OrderStatus[] = [
-        OrderStatus.PENDING, OrderStatus.PAID, OrderStatus.SHIPPED, OrderStatus.PARTIALLY_SHIPPED
+        OrderStatus.PENDING, OrderStatus.PAID, OrderStatus.SHIPPED,
+        OrderStatus.PARTIALLY_SHIPPED, OrderStatus.PARTIALLY_DELIVERED
       ];
       this.allActiveOrders = (res?.content || []).filter(o => activeStatuses.includes(o.status));
       this.pageNumber = 0;
@@ -173,7 +174,10 @@ export class IndOrdersComponent implements OnInit, OnDestroy {
       case OrderStatus.PAID: return 'status-approved';
       case OrderStatus.PARTIALLY_SHIPPED: return 'status-shipped';
       case OrderStatus.SHIPPED: return 'status-shipped';
+      case OrderStatus.PARTIALLY_DELIVERED: return 'status-shipped';
       case OrderStatus.DELIVERED: return 'status-delivered';
+      case OrderStatus.PARTIALLY_REFUNDED: return 'status-cancelled';
+      case OrderStatus.REFUNDED: return 'status-cancelled';
       case OrderStatus.CANCELLED: return 'status-cancelled';
       default: return '';
     }
@@ -185,7 +189,10 @@ export class IndOrdersComponent implements OnInit, OnDestroy {
       case OrderStatus.PAID: return '✅';
       case OrderStatus.PARTIALLY_SHIPPED: return '📦';
       case OrderStatus.SHIPPED: return '🚚';
+      case OrderStatus.PARTIALLY_DELIVERED: return '📬';
       case OrderStatus.DELIVERED: return '🎉';
+      case OrderStatus.PARTIALLY_REFUNDED: return '↩️';
+      case OrderStatus.REFUNDED: return '↩️';
       case OrderStatus.CANCELLED: return '❌';
       default: return '•';
     }

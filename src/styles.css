@@ -6,6 +6,17 @@
 /* ── Base Reset ─────────────────────────────────────────── */
 *, *::before, *::after { box-sizing: border-box; }
 
+/* ── Touch: eliminate 300ms tap delay, prevent accidental zoom ── */
+button, a, [role="button"], input, select, textarea, label {
+  touch-action: manipulation;
+}
+
+/* ── Touch: disable hover transforms that cause tap misses ─── */
+@media (hover: none) {
+  .sidebar-nav a:hover { transform: none !important; }
+  .btn-page:hover:not(:disabled) { transform: none !important; }
+}
+
 html, body {
   margin: 0;
   padding: 0;

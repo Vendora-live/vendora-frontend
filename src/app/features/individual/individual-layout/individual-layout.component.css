@@ -12,10 +12,12 @@
   backdrop-filter: blur(2px);
   transition: opacity 0.3s ease;
   opacity: 0;
+  pointer-events: none;
 }
 
 .sidebar-overlay.visible {
   opacity: 1;
+  pointer-events: auto;
 }
 
 @media (max-width: 768px) {
@@ -190,7 +192,6 @@
   position: sticky; top: 0; z-index: 50;
   transition: background 0.35s ease, border-color 0.35s ease;
   flex-shrink: 0;
-  position: relative;
 }
 
 .hamburger-btn {
@@ -342,8 +343,8 @@
     z-index: 200;
   }
   .sidebar.open { transform: translateX(0); }
-  .sidebar-close-btn { display: flex; align-items: center; justify-content: center; }
-  .hamburger-btn { display: flex; }
+  .sidebar-close-btn { display: flex; align-items: center; justify-content: center; width: 44px; height: 44px; }
+  .hamburger-btn { display: flex; width: 44px; height: 44px; }
   .content { padding: 14px; }
   .top-header { padding: 0 12px; }
   .user-chip { display: none; }

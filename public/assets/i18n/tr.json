@@ -57,7 +57,8 @@
       "orders": "Siparişler",
       "analytics": "Analitik",
       "reviews": "Yorumlar",
-      "shipments": "Kargolar"
+      "shipments": "Kargolar",
+      "refunds": "İade Talepleri"
     }
   },
   "IND": {
@@ -69,6 +70,7 @@
       "activeOrders": "Aktif Siparişler",
       "purchaseHistory": "Satın Alma Geçmişi",
       "myReviews": "Yorumlarım",
+      "myRefunds": "İadelerim",
       "analytics": "Harcama Analitikleri",
       "profile": "Profil Ayarları",
       "addresses": "Adreslerim",
@@ -249,14 +251,21 @@
     "itemsInPackage": "Bu paketteki ürünler",
     "rateProduct": "Ürünü Değerlendir",
     "rated": "Değerlendirildi",
+    "requestRefund": "İade Talep Et",
+    "refundModalTitle": "İade Talebinde Bulun",
+    "refundReasonLabel": "İade Nedeni",
+    "refundReasonPlaceholder": "Bu ürünü neden iade etmek istediğinizi açıklayın...",
+    "submitRefund": "Talep Gönder",
+    "submittingRefund": "Gönderiliyor...",
     "notFound": "Sipariş Bulunamadı",
     "notFoundDesc": "Aradığınız sipariş bulunamadı."
   },
   "HISTORY": {
     "title": "Satın Alma Geçmişi",
-    "subtitle": "Teslim edilen ve iptal edilen siparişlerinizin tam kaydı.",
+    "subtitle": "Ödeme yaptığınız tüm siparişlerinizin kaydı.",
     "delivered": "Teslim Edildi",
     "cancelled": "İptal Edildi",
+    "inProgress": "Devam Ediyor",
     "totalSpent": "Toplam Harcama",
     "searchPlaceholder": "Sipariş ID, mağaza, ürün ile ara...",
     "all": "Tümü",
@@ -269,7 +278,7 @@
     "status": "Durum",
     "viewDetails": "Detayları Gör →",
     "noHistory": "Geçmiş Yok",
-    "noHistoryDesc": "Siparişleriniz teslim edildiğinde veya iptal edildiğinde burada görünecek.",
+    "noHistoryDesc": "Ödeme yaptığınız siparişler burada görünecek.",
     "noResults": "Sonuç Bulunamadı",
     "noResultsDesc": "Arama veya filtrenizi değiştirmeyi deneyin."
   },
@@ -392,6 +401,42 @@
     "express": "Ekspres Teslimat",
     "sameDay": "Aynı Gün Teslimat",
     "confirmShipment": "Kargoyu Onayla"
+  },
+  "MY_REFUNDS": {
+    "title": "İade Taleplerim",
+    "subtitle": "İade ve geri ödeme taleplerinizin durumunu takip edin.",
+    "loading": "İade talepleri yükleniyor...",
+    "noRefunds": "İade Talebi Yok",
+    "noRefundsDesc": "Henüz hiç iade talebinde bulunmadınız.",
+    "product": "Ürün",
+    "orderLabel": "Sipariş #{{id}}",
+    "amount": "İade Tutarı",
+    "status": "Durum",
+    "reason": "İade Nedeni",
+    "requestedOn": "Talep Tarihi",
+    "rejectionReason": "Red Gerekçesi"
+  },
+  "CORP_REFUNDS": {
+    "title": "İade Talepleri",
+    "subtitle": "Müşterilerinizden gelen iade taleplerini inceleyin ve yönetin.",
+    "loading": "İade talepleri yükleniyor...",
+    "noRefunds": "İade Talebi Yok",
+    "noRefundsDesc": "Mağazanız için şu anda iade talebi bulunmuyor.",
+    "product": "Ürün",
+    "orderLabel": "Sipariş #{{id}}",
+    "amount": "Tutar",
+    "status": "Durum",
+    "reason": "Müşteri Nedeni",
+    "requestedOn": "Tarih",
+    "approve": "Onayla",
+    "reject": "Reddet",
+    "rejectionReason": "Red Gerekçesi",
+    "rejectModalTitle": "İade Talebini Reddet",
+    "rejectReasonLabel": "Red Nedeni",
+    "rejectReasonPlaceholder": "Bu talebi neden reddettiğinizi açıklayın...",
+    "confirmReject": "Reddi Onayla",
+    "approving": "Onaylanıyor...",
+    "rejecting": "Reddediliyor..."
   },
   "ADMIN_DASH": {
     "title": "Yönetim Paneli",

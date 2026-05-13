@@ -1,0 +1,106 @@
+<div class="refunds-container">
+
+  <div class="page-header">
+    <h2>{{ 'CORP_REFUNDS.title' | translate }}</h2>
+    <p class="subtitle">{{ 'CORP_REFUNDS.subtitle' | translate }}</p>
+  </div>
+
+  <div class="loader" *ngIf="isLoading">
+    <div class="spinner"></div>
+    <p>{{ 'CORP_REFUNDS.loading' | translate }}</p>
+  </div>
+
+  <ng-container *ngIf="!isLoading">
+    <div class="empty-state" *ngIf="refunds.length === 0">
+      <div class="empty-icon">↩️</div>
+      <h3>{{ 'CORP_REFUNDS.noRefunds' | translate }}</h3>
+      <p>{{ 'CORP_REFUNDS.noRefundsDesc' | translate }}</p>
+    </div>
+
+    <div class="refund-list" *ngIf="refunds.length > 0">
+      <div class="refund-card" *ngFor="let refund of refunds">
+        <div class="refund-card-header">
+          <div class="refund-info">
+            <span class="product-name">{{ refund.productName }}</span>
+            <span class="order-ref">{{ 'CORP_REFUNDS.orderLabel' | translate: { id: refund.masterOrderId } }}</span>
+          </div>
+          <span class="status-badge" [ngClass]="getStatusClass(refund.status)">{{ refund.status }}</span>
+        </div>
+
+        <div class="refund-card-body">
+          <div class="refund-meta-row">
+            <div class="meta-item">
+              <span class="meta-label">{{ 'CORP_REFUNDS.requestedOn' | translate }}</span>
+              <span class="meta-value">{{ refund.createdAt | date:'mediumDate' }}</span>
+            </div>
+            <div class="meta-item">
+              <span class="meta-label">{{ 'CORP_REFUNDS.amount' | translate }}</span>
+              <span class="meta-value amount">{{ refund.refundAmount | currency:'TRY':'₺' }}</span>
+            </div>
+            <div class="meta-item reason-col">
+              <span class="meta-label">{{ 'CORP_REFUNDS.reason' | translate }}</span>
+              <span class="meta-value">{{ refund.reason }}</span>
+            </div>
+          </div>
+
+          <div class="rejection-box" *ngIf="refund.rejectionReason">
+            <span class="rejection-label">{{ 'CORP_REFUNDS.rejectionReason' | translate }}:</span>
+            <span class="rejection-text">{{ refund.rejectionReason }}</span>
+          </div>
+
+          <div class="refund-actions" *ngIf="refund.status === RefundRequestStatus.PENDING">
+            <button class="approve-btn"
+                    (click)="approve(refund.id)"
+                    [disabled]="approvingId === refund.id">
+              {{ approvingId === refund.id ? ('CORP_REFUNDS.approving' | translate) : ('CORP_REFUNDS.approve' | translate) }}
+            </button>
+            <button class="reject-btn"
+                    (click)="openRejectModal(refund.id)"
+                    [disabled]="approvingId === refund.id">
+              {{ 'CORP_REFUNDS.reject' | translate }}
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div class="pagination" *ngIf="totalPages > 1">
+        <button (click)="prevPage()" [disabled]="pageNumber === 0">{{ 'COMMON.prevPage' | translate }}</button>
+        <span>{{ 'COMMON.pagination' | translate: { current: pageNumber + 1, total: totalPages } }}</span>
+        <button (click)="nextPage()" [disabled]="pageNumber >= totalPages - 1">{{ 'COMMON.nextPage' | translate }}</button>
+      </div>
+    </div>
+  </ng-container>
+
+</div>
+
+<!-- Reject Modal -->
+<div class="modal-overlay" *ngIf="showRejectModal" (click)="closeRejectModal()">
+  <div class="modal-content" (click)="$event.stopPropagation()">
+    <div class="modal-header">
+      <h3>{{ 'CORP_REFUNDS.rejectModalTitle' | translate }}</h3>
+      <button class="close-btn" (click)="closeRejectModal()">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="reject-form">
+        <label class="form-label">{{ 'CORP_REFUNDS.rejectReasonLabel' | translate }}</label>
+        <textarea
+          class="form-textarea"
+          [(ngModel)]="rejectionReason"
+          [placeholder]="'CORP_REFUNDS.rejectReasonPlaceholder' | translate"
+          rows="4"
+          maxlength="500">
+        </textarea>
+        <div class="form-actions">
+          <button class="cancel-btn" (click)="closeRejectModal()" [disabled]="submittingReject">
+            {{ 'COMMON.cancel' | translate }}
+          </button>
+          <button class="confirm-reject-btn"
+                  (click)="submitReject()"
+                  [disabled]="submittingReject || !rejectionReason.trim()">
+            {{ submittingReject ? ('CORP_REFUNDS.rejecting' | translate) : ('CORP_REFUNDS.confirmReject' | translate) }}
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

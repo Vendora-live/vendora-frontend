@@ -3,7 +3,10 @@ export enum OrderStatus {
   PAID = 'PAID',
   PARTIALLY_SHIPPED = 'PARTIALLY_SHIPPED',
   SHIPPED = 'SHIPPED',
+  PARTIALLY_DELIVERED = 'PARTIALLY_DELIVERED',
   DELIVERED = 'DELIVERED',
+  PARTIALLY_REFUNDED = 'PARTIALLY_REFUNDED',
+  REFUNDED = 'REFUNDED',
   CANCELLED = 'CANCELLED'
 }
 
@@ -25,6 +28,7 @@ export interface DtoOrder {
   status: OrderStatus;
   grandTotal: number;
   orderDate: string;
+  deliveredAt?: string;
   storeId?: number;
   storeName?: string;
   parentOrderId?: number;

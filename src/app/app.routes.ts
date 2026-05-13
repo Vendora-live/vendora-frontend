@@ -90,6 +90,11 @@ export const routes: Routes = [
                     .then(m => m.IndAddressesComponent)
             },
             {
+                path: 'refunds',
+                loadComponent: () => import('./features/individual/ind-refunds/ind-refunds.component')
+                    .then(m => m.IndRefundsComponent)
+            },
+            {
                 path: 'become-corporate',
                 loadComponent: () => import('./features/individual/ind-corporate-apply/ind-corporate-apply.component')
                     .then(m => m.IndCorporateApplyComponent)
@@ -207,6 +212,11 @@ export const routes: Routes = [
                 path: 'shipments',
                 loadComponent: () => import('./features/corporate/corp-shipments/corp-shipments.component')
                     .then(m => m.CorpShipmentsComponent)
+            },
+            {
+                path: 'refunds',
+                loadComponent: () => import('./features/corporate/corp-refunds/corp-refunds.component')
+                    .then(m => m.CorpRefundsComponent)
             },
             { path: '', redirectTo: 'dashboard', pathMatch: 'full' }
         ]

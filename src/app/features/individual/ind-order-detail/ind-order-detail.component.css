@@ -261,6 +261,104 @@
   cursor: default;
 }
 
+.refund-btn {
+  background: transparent;
+  border: 1.5px solid #ef4444;
+  color: #ef4444;
+  padding: 7px 14px;
+  border-radius: 8px;
+  font-size: 0.88rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.refund-btn:hover {
+  background: rgba(239, 68, 68, 0.1);
+  transform: translateY(-1px);
+}
+
+.refund-form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.refund-label {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.refund-textarea {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid var(--border-color);
+  border-radius: 10px;
+  background: var(--input-bg, var(--card-bg));
+  color: var(--text-primary);
+  font-size: 0.95rem;
+  resize: vertical;
+  font-family: inherit;
+  transition: border-color 0.2s;
+  box-sizing: border-box;
+}
+
+.refund-textarea:focus {
+  outline: none;
+  border-color: #ef4444;
+}
+
+.refund-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+}
+
+.cancel-btn {
+  background: transparent;
+  border: 1px solid var(--border-color);
+  color: var(--text-secondary);
+  padding: 10px 20px;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.cancel-btn:hover:not(:disabled) {
+  background: rgba(148, 163, 184, 0.1);
+}
+
+.submit-refund-btn {
+  background: #ef4444;
+  border: none;
+  color: #fff;
+  padding: 10px 20px;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.submit-refund-btn:hover:not(:disabled) {
+  background: #dc2626;
+  transform: translateY(-1px);
+}
+
+.submit-refund-btn:disabled,
+.cancel-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
 .status-badge {
   display: inline-block;
   padding: 4px 12px;
@@ -352,6 +450,13 @@
   color: var(--text-secondary);
   cursor: pointer;
   line-height: 1;
+  width: 44px;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px;
+  flex-shrink: 0;
 }
 
 .close-btn:hover {

@@ -72,17 +72,29 @@
             </div>
             <div class="item-actions">
               <span class="price">{{ item.price | currency:'TRY':'₺' }}</span>
+
               <ng-container *ngIf="isSubOrderDelivered(sub)">
                 <button class="rate-btn"
                         *ngIf="!reviewedProductIds.has(item.productId!)"
                         (click)="openReviewModal(item.productId!, $event)">
                   ⭐ {{ 'ORDER_DETAIL.rateProduct' | translate }}
                 </button>
-                <button class="rate-btn rated"
-                        *ngIf="reviewedProductIds.has(item.productId!)"
-                        disabled>
+                <button class="rate-btn rated" *ngIf="reviewedProductIds.has(item.productId!)" disabled>
                   ✅ {{ 'ORDER_DETAIL.rated' | translate }}
                 </button>
+              </ng-container>
+
+              <ng-container *ngIf="item.id">
+                <button class="refund-btn"
+                        *ngIf="canRequestRefund(sub, item.id)"
+                        (click)="openRefundModal(item.id, $event)">
+                  ↩️ {{ 'ORDER_DETAIL.requestRefund' | translate }}
+                </button>
+                <span class="status-badge narrow"
+                      *ngIf="refundRequestsMap[item.id] as refund"
+                      [ngClass]="getRefundStatusClass(refund.status)">
+                  ↩️ {{ refund.status }}
+                </span>
               </ng-container>
             </div>
           </div>
@@ -108,6 +120,38 @@
     </div>
     <div class="modal-body">
       <app-review-widget *ngIf="reviewProductId" [productId]="reviewProductId" [allowWrite]="true"></app-review-widget>
+    </div>
+  </div>
+</div>
+
+<!-- Refund Modal -->
+<div class="modal-overlay" *ngIf="showRefundModal" (click)="closeRefundModal()">
+  <div class="modal-content" (click)="$event.stopPropagation()">
+    <div class="modal-header">
+      <h3>{{ 'ORDER_DETAIL.refundModalTitle' | translate }}</h3>
+      <button class="close-btn" (click)="closeRefundModal()">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="refund-form">
+        <label class="refund-label">{{ 'ORDER_DETAIL.refundReasonLabel' | translate }}</label>
+        <textarea
+          class="refund-textarea"
+          [(ngModel)]="refundReason"
+          [placeholder]="'ORDER_DETAIL.refundReasonPlaceholder' | translate"
+          rows="4"
+          maxlength="500">
+        </textarea>
+        <div class="refund-actions">
+          <button class="cancel-btn" (click)="closeRefundModal()" [disabled]="submittingRefund">
+            {{ 'COMMON.cancel' | translate }}
+          </button>
+          <button class="submit-refund-btn"
+                  (click)="submitRefund()"
+                  [disabled]="submittingRefund || !refundReason.trim()">
+            {{ submittingRefund ? ('ORDER_DETAIL.submittingRefund' | translate) : ('ORDER_DETAIL.submitRefund' | translate) }}
+          </button>
+        </div>
+      </div>
     </div>
   </div>
 </div>

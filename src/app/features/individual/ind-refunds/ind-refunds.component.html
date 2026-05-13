@@ -1,0 +1,63 @@
+<div class="refunds-container">
+
+  <div class="page-header">
+    <h2>{{ 'MY_REFUNDS.title' | translate }}</h2>
+    <p class="subtitle">{{ 'MY_REFUNDS.subtitle' | translate }}</p>
+  </div>
+
+  <div class="loader" *ngIf="isLoading">
+    <div class="spinner"></div>
+    <p>{{ 'MY_REFUNDS.loading' | translate }}</p>
+  </div>
+
+  <ng-container *ngIf="!isLoading">
+    <div class="empty-state" *ngIf="refunds.length === 0">
+      <div class="empty-icon">↩️</div>
+      <h3>{{ 'MY_REFUNDS.noRefunds' | translate }}</h3>
+      <p>{{ 'MY_REFUNDS.noRefundsDesc' | translate }}</p>
+    </div>
+
+    <div class="refund-list" *ngIf="refunds.length > 0">
+      <div class="refund-card" *ngFor="let refund of refunds">
+        <div class="refund-card-header">
+          <div class="refund-product">
+            <span class="product-name">{{ refund.productName }}</span>
+            <a [routerLink]="['/individual/orders', refund.masterOrderId]" class="order-link">
+              {{ 'MY_REFUNDS.orderLabel' | translate: { id: refund.masterOrderId } }}
+            </a>
+          </div>
+          <span class="status-badge" [ngClass]="getStatusClass(refund.status)">{{ refund.status }}</span>
+        </div>
+
+        <div class="refund-card-body">
+          <div class="refund-meta-row">
+            <div class="meta-item">
+              <span class="meta-label">{{ 'MY_REFUNDS.requestedOn' | translate }}</span>
+              <span class="meta-value">{{ refund.createdAt | date:'mediumDate' }}</span>
+            </div>
+            <div class="meta-item">
+              <span class="meta-label">{{ 'MY_REFUNDS.amount' | translate }}</span>
+              <span class="meta-value amount">{{ refund.refundAmount | currency:'TRY':'₺' }}</span>
+            </div>
+            <div class="meta-item">
+              <span class="meta-label">{{ 'MY_REFUNDS.reason' | translate }}</span>
+              <span class="meta-value reason-text">{{ refund.reason }}</span>
+            </div>
+          </div>
+
+          <div class="rejection-box" *ngIf="refund.rejectionReason">
+            <span class="rejection-label">{{ 'MY_REFUNDS.rejectionReason' | translate }}:</span>
+            <span class="rejection-text">{{ refund.rejectionReason }}</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="pagination" *ngIf="totalPages > 1">
+        <button (click)="prevPage()" [disabled]="pageNumber === 0">{{ 'COMMON.prevPage' | translate }}</button>
+        <span>{{ 'COMMON.pagination' | translate: { current: pageNumber + 1, total: totalPages } }}</span>
+        <button (click)="nextPage()" [disabled]="pageNumber >= totalPages - 1">{{ 'COMMON.nextPage' | translate }}</button>
+      </div>
+    </div>
+  </ng-container>
+
+</div>

@@ -12,9 +12,10 @@
   backdrop-filter: blur(2px);
   transition: opacity 0.3s ease;
   opacity: 0;
+  pointer-events: none;
 }
 
-.sidebar-overlay.visible { opacity: 1; }
+.sidebar-overlay.visible { opacity: 1; pointer-events: auto; }
 
 @media (max-width: 768px) {
   .sidebar-overlay { display: block; }
@@ -244,8 +245,8 @@
     width: 220px; transform: translateX(-100%); z-index: 200;
   }
   .sidebar.open { transform: translateX(0); }
-  .sidebar-close-btn { display: flex; }
-  .hamburger-btn { display: flex; }
+  .sidebar-close-btn { display: flex; width: 44px; height: 44px; }
+  .hamburger-btn { display: flex; width: 44px; height: 44px; }
   .content { padding: 14px; }
   .top-header { padding: 0 12px; }
   .user-chip { display: none; }

@@ -12,9 +12,10 @@
   backdrop-filter: blur(2px);
   transition: opacity 0.3s ease;
   opacity: 0;
+  pointer-events: none;
 }
 
-.sidebar-overlay.visible { opacity: 1; }
+.sidebar-overlay.visible { opacity: 1; pointer-events: auto; }
 
 @media (max-width: 768px) {
   .sidebar-overlay { display: block; }

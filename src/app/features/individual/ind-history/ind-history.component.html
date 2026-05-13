@@ -39,6 +39,7 @@
     </div>
     <div class="filter-tabs">
       <button [class.active]="statusFilter === 'ALL'" (click)="statusFilter = 'ALL'; applyFilters()">{{ 'HISTORY.all' | translate }}</button>
+      <button [class.active]="statusFilter === 'IN_PROGRESS'" (click)="statusFilter = 'IN_PROGRESS'; applyFilters()">{{ 'HISTORY.inProgress' | translate }}</button>
       <button [class.active]="statusFilter === 'DELIVERED'" (click)="statusFilter = 'DELIVERED'; applyFilters()">{{ 'HISTORY.delivered' | translate }}</button>
       <button [class.active]="statusFilter === 'CANCELLED'" (click)="statusFilter = 'CANCELLED'; applyFilters()">{{ 'HISTORY.cancelled' | translate }}</button>
       <button class="export-btn" (click)="exportToCSV()" style="margin-left: 1rem; background: #22c55e; color: white; border: none; padding: 0.5rem 1rem; border-radius: 8px; cursor: pointer; font-weight: 600;">{{ 'HISTORY.exportCSV' | translate }}</button>
