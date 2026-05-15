@@ -197,7 +197,8 @@
     "criticalStock": "🔥 Only {{count}} left — Order soon!",
     "inStockLabel": "In Stock",
     "inStockCount": "{{count}} in stock",
-    "general": "General"
+    "general": "General",
+    "recentlyViewed": "Recently Viewed"
   },
   "CART": {
     "title": "My Shopping Cart",

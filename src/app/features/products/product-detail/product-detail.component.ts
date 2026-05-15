@@ -1,5 +1,5 @@
 import { Component, inject, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, RouterLink } from '@angular/router';
 import { Location, CommonModule } from '@angular/common';
 import { TranslateModule } from '@ngx-translate/core';
 import { ProductService } from '../../../core/services/product.service';
@@ -8,10 +8,13 @@ import { ToastService } from '../../../core/services/toast.service';
 import { Product, ProductImage } from '../../../shared/models/product';
 import { ReviewWidgetComponent } from '../../../shared/components/review-widget/review-widget.component';
 
+const RV_KEY = 'vendora_recently_viewed';
+const RV_MAX = 10;
+
 @Component({
     selector: 'app-product-detail',
     standalone: true,
-    imports: [CommonModule, TranslateModule, ReviewWidgetComponent],
+    imports: [CommonModule, TranslateModule, ReviewWidgetComponent, RouterLink],
     templateUrl: './product-detail.component.html',
     styleUrl: './product-detail.component.css'
 })
@@ -27,6 +30,7 @@ export class ProductDetailComponent implements OnInit {
     errorMessage = '';
     quantity = 1;
     activeImageIndex = 0;
+    recentlyViewed: Product[] = [];
 
     ngOnInit(): void {
         const id = Number(this.route.snapshot.paramMap.get('id'));
@@ -36,6 +40,8 @@ export class ProductDetailComponent implements OnInit {
                     this.product = data;
                     this.activeImageIndex = data.images?.findIndex(i => i.isPrimary) ?? 0;
                     if (this.activeImageIndex < 0) this.activeImageIndex = 0;
+                    this.saveToRecentlyViewed(data);
+                    this.recentlyViewed = this.getRecentlyViewed(data.id!);
                     this.isLoading = false;
                 },
                 error: () => {
@@ -43,6 +49,26 @@ export class ProductDetailComponent implements OnInit {
                     this.isLoading = false;
                 }
             });
+        }
+    }
+
+    private saveToRecentlyViewed(product: Product): void {
+        try {
+            const stored: Product[] = JSON.parse(localStorage.getItem(RV_KEY) ?? '[]');
+            const filtered = stored.filter(p => p.id !== product.id);
+            filtered.unshift(product);
+            localStorage.setItem(RV_KEY, JSON.stringify(filtered.slice(0, RV_MAX)));
+        } catch {
+            // localStorage unavailable (private browsing, storage full, etc.)
+        }
+    }
+
+    private getRecentlyViewed(excludeId: number): Product[] {
+        try {
+            const stored: Product[] = JSON.parse(localStorage.getItem(RV_KEY) ?? '[]');
+            return stored.filter(p => p.id !== excludeId).slice(0, 6);
+        } catch {
+            return [];
         }
     }
 

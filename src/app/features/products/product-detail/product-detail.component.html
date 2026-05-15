@@ -75,5 +75,23 @@
     <div class="product-reviews-section">
         <app-review-widget [productId]="product.id!" [allowWrite]="false"></app-review-widget>
     </div>
+
+    <!-- Recently Viewed -->
+    <div class="recently-viewed-section" *ngIf="recentlyViewed.length > 0">
+        <h3 class="rv-title">{{ 'PRODUCTS.recentlyViewed' | translate }}</h3>
+        <div class="rv-scroll-row">
+            <a class="rv-card"
+               *ngFor="let p of recentlyViewed"
+               [routerLink]="['/individual/products', p.id]">
+                <div class="rv-img-wrap">
+                    <img [src]="getImageUrl(p.primaryImageUrl)" [alt]="p.name">
+                </div>
+                <div class="rv-info">
+                    <span class="rv-name">{{ p.name }}</span>
+                    <span class="rv-price">{{ p.unitPrice | currency:'TRY':'₺':'1.2-2' }}</span>
+                </div>
+            </a>
+        </div>
+    </div>
     }
 </div>

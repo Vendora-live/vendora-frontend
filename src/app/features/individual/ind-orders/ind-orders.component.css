@@ -289,6 +289,37 @@
   to { opacity: 1; transform: translateY(0); }
 }
 
+/* ── Skeleton ── */
+.skeleton-order-card {
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  border-radius: 12px;
+  padding: 16px 20px;
+  display: grid;
+  grid-template-columns: 1fr 1.5fr 1fr 1fr auto;
+  gap: 16px;
+  align-items: center;
+}
+.skel-col { display: flex; flex-direction: column; gap: 6px; }
+.skeleton-line { height: 12px; border-radius: 6px; }
+.sk-xs { width: 40%; }
+.sk-sm { width: 55%; }
+.sk-md { width: 70%; }
+.skeleton-badge { height: 24px; width: 80px; border-radius: 999px; }
+.skeleton-btn-order { height: 36px; width: 100px; border-radius: 8px; }
+
+@media (max-width: 768px) {
+  .skeleton-order-card {
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: auto auto;
+  }
+  .sk-hide-sm { display: none; }
+}
+@media (max-width: 480px) {
+  .skeleton-order-card { grid-template-columns: 1fr; }
+  .skeleton-btn-order { width: 100%; }
+}
+
 /* ── Loader & Empty State ── */
 .loader, .empty-state {
   display: flex;

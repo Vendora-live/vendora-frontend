@@ -4,9 +4,29 @@
     <p class="header-sub">{{ 'ORDERS.subtitle' | translate }}</p>
   </div>
 
-  <div class="loader" *ngIf="isLoading">
-    <div class="spinner"></div>
-    <p>{{ 'ORDERS.loading' | translate }}</p>
+  <!-- Skeleton Loading -->
+  <div class="orders-list" *ngIf="isLoading">
+    <div class="skeleton-order-card" *ngFor="let i of [1,2,3,4]">
+      <div class="skel-col">
+        <div class="skeleton skeleton-line sk-xs"></div>
+        <div class="skeleton skeleton-line sk-sm"></div>
+      </div>
+      <div class="skel-col sk-hide-sm">
+        <div class="skeleton skeleton-line sk-xs"></div>
+        <div class="skeleton skeleton-line sk-md"></div>
+      </div>
+      <div class="skel-col">
+        <div class="skeleton skeleton-line sk-xs"></div>
+        <div class="skeleton skeleton-badge"></div>
+      </div>
+      <div class="skel-col sk-hide-sm">
+        <div class="skeleton skeleton-line sk-xs"></div>
+        <div class="skeleton skeleton-line sk-sm"></div>
+      </div>
+      <div class="skel-col">
+        <div class="skeleton skeleton-btn-order"></div>
+      </div>
+    </div>
   </div>
 
   <div class="orders-list" *ngIf="!isLoading && orders.length > 0">

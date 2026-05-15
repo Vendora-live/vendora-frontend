@@ -197,7 +197,8 @@
     "criticalStock": "🔥 Sadece {{count}} kaldı — Hemen sipariş verin!",
     "inStockLabel": "Stokta Var",
     "inStockCount": "{{count}} stokta",
-    "general": "Genel"
+    "general": "Genel",
+    "recentlyViewed": "Son Baktıklarım"
   },
   "CART": {
     "title": "Alışveriş Sepetim",

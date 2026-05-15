@@ -4,10 +4,18 @@
         <p>{{ 'STORES.subtitle' | translate }}</p>
     </div>
 
-    <!-- Loading State -->
-    <div *ngIf="isLoading" class="loading-state">
-        <div class="spinner"></div>
-        <p>{{ 'STORES.loading' | translate }}</p>
+    <!-- Skeleton Loading -->
+    <div *ngIf="isLoading" class="store-grid">
+        <div class="skeleton-store-card" *ngFor="let i of [1,2,3,4,5,6]">
+            <div class="skeleton skeleton-store-header"></div>
+            <div class="skeleton-store-body">
+                <div class="skeleton skeleton-line sk-lg"></div>
+                <div class="skeleton skeleton-line sk-md"></div>
+                <div class="skeleton-store-footer">
+                    <div class="skeleton skeleton-btn-store"></div>
+                </div>
+            </div>
+        </div>
     </div>
 
     <!-- Error State -->

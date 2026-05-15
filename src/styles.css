@@ -130,6 +130,10 @@ html, body {
   /* Transitions */
   --transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
 
+  /* Skeleton */
+  --skeleton-base:  #e2e8f0;
+  --skeleton-shine: #f8fafc;
+
   /* Legacy compat */
   --admin-sidebar-bg: #ffffff;
   --admin-content-bg: #f8fafc;
@@ -218,6 +222,10 @@ html, body {
   --ind-nav-color:   #a5b4fc;
   --ind-nav-hover:   #c7d2fe;
   --ind-header-accent: #6366f1;
+
+  /* Skeleton */
+  --skeleton-base:  #1e1e2e;
+  --skeleton-shine: #2a2a3e;
 
   /* Legacy compat */
   --admin-sidebar-bg: #07070a;
@@ -344,6 +352,18 @@ html, body {
 @keyframes shimmer {
   0%   { background-position: -200% center; }
   100% { background-position: 200% center; }
+}
+
+/* ── Skeleton Utility ───────────────────────────────────── */
+.skeleton {
+  background: linear-gradient(90deg,
+    var(--skeleton-base) 25%,
+    var(--skeleton-shine) 50%,
+    var(--skeleton-base) 75%
+  );
+  background-size: 400% 100%;
+  animation: shimmer 1.4s ease infinite;
+  border-radius: 6px;
 }
 
 @keyframes overlayIn { from { opacity: 0; } to { opacity: 1; } }
