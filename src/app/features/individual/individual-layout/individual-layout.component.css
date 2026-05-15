@@ -196,19 +196,22 @@
 
 .hamburger-btn {
   display: none;
-  flex-direction: column; justify-content: center; gap: 5px;
-  width: 36px; height: 36px;
+  align-items: center; justify-content: center;
+  width: 44px; height: 44px;
   background: var(--btn-ghost-bg);
   border: 1px solid var(--btn-ghost-border);
-  border-radius: 8px; cursor: pointer; padding: 8px;
+  border-radius: 10px; cursor: pointer; padding: 6px;
   flex-shrink: 0; transition: all 0.2s;
 }
 
-/* Mobile brand — hidden on desktop, shown on mobile via media query */
-.mobile-brand { display: none; }
-.hamburger-btn span { display: block; height: 2px; background: var(--text-secondary); border-radius: 2px; }
-.hamburger-btn:hover { background: var(--ind-accent-hover); }
-.hamburger-btn:hover span { background: var(--ind-accent); }
+.hamburger-logo {
+  width: 100%; height: 100%;
+  border-radius: 6px;
+  object-fit: contain;
+  pointer-events: none;
+}
+
+.hamburger-btn:hover { background: var(--ind-accent-hover); border-color: var(--ind-accent); }
 
 .header-title { flex: 1; display: flex; align-items: center; gap: 10px; min-width: 0; }
 
@@ -344,40 +347,10 @@
   }
   .sidebar.open { transform: translateX(0); }
   .sidebar-close-btn { display: flex; align-items: center; justify-content: center; width: 44px; height: 44px; }
-  .hamburger-btn { display: flex; width: 44px; height: 44px; }
+  .hamburger-btn { display: flex; }
   .content { padding: 14px; }
   .top-header { padding: 0 12px; }
   .user-chip { display: none; }
-
-  /* Mobile brand */
-  .mobile-brand {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    gap: 3px;
-    text-decoration: none;
-    position: absolute;
-    left: 50%;
-    transform: translateX(-50%);
-  }
-  .mobile-brand-logo {
-    width: 28px;
-    height: 28px;
-    border-radius: 8px;
-    object-fit: contain;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.25);
-  }
-  .mobile-brand-name {
-    font-size: 0.7rem;
-    font-weight: 700;
-    color: var(--text-primary);
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    line-height: 1;
-  }
-
-  /* Hide desktop header-title text on mobile to avoid overlap */
   .header-title { display: none; }
 }
 
