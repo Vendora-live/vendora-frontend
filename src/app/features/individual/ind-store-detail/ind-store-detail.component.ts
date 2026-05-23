@@ -6,11 +6,13 @@ import { StoreService } from '../../../core/services/store.service';
 import { Product } from '../../../shared/models/product';
 import { Store } from '../../../shared/models/store';
 import { AuthService } from '../../../core/services/auth.service';
+import { BreadcrumbComponent, BreadcrumbItem } from '../../../shared/components/breadcrumb/breadcrumb.component';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-ind-store-detail',
   standalone: true,
-  imports: [CommonModule, RouterLink],
+  imports: [CommonModule, RouterLink, BreadcrumbComponent, TranslateModule],
   templateUrl: './ind-store-detail.component.html',
   styleUrl: './ind-store-detail.component.css'
 })
@@ -20,11 +22,13 @@ export class IndStoreDetailComponent implements OnInit {
   private productService = inject(ProductService);
   private storeService = inject(StoreService);
   private authService = inject(AuthService);
+  private translate = inject(TranslateService);
 
   storeId: number | null = null;
   store: Store | null = null;
   products: Product[] = [];
   userRole: string | null = null;
+  breadcrumbs: BreadcrumbItem[] = [];
   
   isLoading = true;
   errorMessage = '';
@@ -55,6 +59,10 @@ export class IndStoreDetailComponent implements OnInit {
     this.storeService.getStoreById(this.storeId).subscribe({
       next: (storeData) => {
         this.store = storeData;
+        this.breadcrumbs = [
+          { label: this.translate.instant('IND.nav.browseStores'), route: ['/individual/stores'] },
+          { label: storeData.name }
+        ];
         // Then fetch products
         this.fetchProducts();
       },

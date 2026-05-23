@@ -95,6 +95,11 @@ export const routes: Routes = [
                     .then(m => m.IndRefundsComponent)
             },
             {
+                path: 'wishlist',
+                loadComponent: () => import('./features/individual/ind-wishlist/ind-wishlist.component')
+                    .then(m => m.IndWishlistComponent)
+            },
+            {
                 path: 'become-corporate',
                 loadComponent: () => import('./features/individual/ind-corporate-apply/ind-corporate-apply.component')
                     .then(m => m.IndCorporateApplyComponent)
@@ -218,15 +223,44 @@ export const routes: Routes = [
                 loadComponent: () => import('./features/corporate/corp-refunds/corp-refunds.component')
                     .then(m => m.CorpRefundsComponent)
             },
+            {
+                path: 'coupons',
+                loadComponent: () => import('./features/corporate/corp-coupons/corp-coupons.component')
+                    .then(m => m.CorpCouponsComponent)
+            },
+            {
+                path: 'questions',
+                loadComponent: () => import('./features/corporate/corp-questions/corp-questions.component')
+                    .then(m => m.CorpQuestionsComponent)
+            },
             { path: '', redirectTo: 'dashboard', pathMatch: 'full' }
         ]
     },
 
+    // ── Halka Açık Ürün Sayfaları (giriş gerekmez) ────────────────────────────
+    {
+        path: 'products',
+        loadComponent: () => import('./features/public/public-layout/public-layout.component')
+            .then(m => m.PublicLayoutComponent),
+        children: [
+            {
+                path: '',
+                loadComponent: () => import('./features/individual/ind-products/ind-products.component')
+                    .then(m => m.IndProductsComponent)
+            },
+            {
+                path: ':id',
+                loadComponent: () => import('./features/products/product-detail/product-detail.component')
+                    .then(m => m.ProductDetailComponent)
+            }
+        ]
+    },
+
     // ── Diğer ─────────────────────────────────────────────────────────────────
-    { 
-        path: 'track/:trackingNumber', 
-        loadComponent: () => import('./features/tracking/tracking.component').then(m => m.TrackingComponent) 
+    {
+        path: 'track/:trackingNumber',
+        loadComponent: () => import('./features/tracking/tracking.component').then(m => m.TrackingComponent)
     },
     { path: 'forbidden', component: ForbiddenComponent },
-    { path: '**', redirectTo: 'login' }
+    { path: '**', redirectTo: 'products' }
 ];

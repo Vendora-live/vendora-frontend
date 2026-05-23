@@ -7,7 +7,7 @@ export const homeGuard: CanActivateFn = () => {
     const router = inject(Router);
 
     if (!authService.isAuthenticated()) {
-        return router.createUrlTree(['/login']);
+        return router.createUrlTree(['/products']);
     }
 
     switch (authService.getRole()) {

@@ -1,3 +1,5 @@
+<app-breadcrumb *ngIf="breadcrumbs.length > 0" [items]="breadcrumbs" />
+
 <div class="store-detail-container">
     <div class="back-link">
         <a (click)="goBack()" style="cursor: pointer;"><i class="icon">⬅️</i> Back to Stores</a>

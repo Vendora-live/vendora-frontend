@@ -1,0 +1,33 @@
+<div class="public-layout">
+
+    <header class="public-header">
+        <a class="brand" routerLink="/products">
+            <img src="favicon.png" alt="Vendora" class="brand-logo">
+            <span class="brand-name">Vendora</span>
+        </a>
+
+        <div class="header-actions">
+            <button class="theme-btn" (click)="themeService.toggle()"
+                [title]="(themeService.isDark() ? 'THEME.switchToLight' : 'THEME.switchToDark') | translate">
+                <span *ngIf="themeService.isDark()">☀️</span>
+                <span *ngIf="!themeService.isDark()">🌙</span>
+            </button>
+
+            <ng-container *ngIf="authService.isAuthenticated(); else guestActions">
+                <a class="btn-dashboard" [routerLink]="dashboardRoute">
+                    {{ 'AUTH_PROMPT.myPanel' | translate }} →
+                </a>
+            </ng-container>
+
+            <ng-template #guestActions>
+                <a class="btn-login" routerLink="/login">{{ 'AUTH_PROMPT.login' | translate }}</a>
+                <a class="btn-register" routerLink="/register">{{ 'AUTH_PROMPT.register' | translate }}</a>
+            </ng-template>
+        </div>
+    </header>
+
+    <main class="public-content">
+        <router-outlet></router-outlet>
+    </main>
+
+</div>

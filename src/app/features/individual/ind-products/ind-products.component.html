@@ -11,11 +11,11 @@
                 [placeholder]="'PRODUCTS.searchPlaceholder' | translate" />
         </div>
         <div class="filter-controls">
-            <select [(ngModel)]="selectedCategory" (ngModelChange)="applyFilters()">
+            <select [(ngModel)]="selectedCategory" (ngModelChange)="onFilterChange()">
                 <option value="ALL">{{ 'PRODUCTS.allCategories' | translate }}</option>
                 <option *ngFor="let cat of categories" [value]="cat">{{ cat }}</option>
             </select>
-            <select [(ngModel)]="sortOption" (ngModelChange)="applyFilters()">
+            <select [(ngModel)]="sortOption" (ngModelChange)="onFilterChange()">
                 <option value="DEFAULT">{{ 'PRODUCTS.sortRecommended' | translate }}</option>
                 <option value="PRICE_ASC">{{ 'PRODUCTS.sortPriceLow' | translate }}</option>
                 <option value="PRICE_DESC">{{ 'PRODUCTS.sortPriceHigh' | translate }}</option>
@@ -55,11 +55,17 @@
 
     <!-- Product Grid -->
     <div *ngIf="!isLoading && !errorMessage && filteredProducts.length > 0" class="product-grid">
-        <div class="product-card" *ngFor="let product of filteredProducts" [routerLink]="['/individual/products', product.id]" style="cursor: pointer;">
+        <div class="product-card" *ngFor="let product of filteredProducts" [routerLink]="productDetailLink(product.id!)" style="cursor: pointer;">
             <div class="product-image" [style.backgroundImage]="'url(' + getImageUrl(product) + ')'">
                 <div class="badge critical" *ngIf="product.stockQuantity > 0 && product.stockQuantity <= 5">🔥 {{ 'PRODUCTS.onlyLeft' | translate: {count: product.stockQuantity} }}</div>
                 <div class="badge low" *ngIf="product.stockQuantity > 5 && product.stockQuantity <= 10">{{ 'PRODUCTS.lowStock' | translate }}</div>
                 <div class="badge out-of-stock" *ngIf="product.stockQuantity === 0">{{ 'PRODUCTS.outOfStock' | translate }}</div>
+                <button class="wishlist-btn"
+                    [class.in-wishlist]="product.id && wishlistService.isInWishlist(product.id)"
+                    (click)="toggleWishlist(product); $event.stopPropagation()"
+                    [title]="(product.id && wishlistService.isInWishlist(product.id) ? 'MY_WISHLIST.removedFromWishlist' : 'MY_WISHLIST.addedToWishlist') | translate">
+                    {{ product.id && wishlistService.isInWishlist(product.id) ? '❤️' : '🤍' }}
+                </button>
             </div>
 
             <div class="product-details">
@@ -77,8 +83,17 @@
         </div>
     </div>
 
-    <!-- Pagination -->
-    <div class="pagination-controls" *ngIf="totalPages >= 0 && !isLoading && !errorMessage">
+    <!-- Scroll Sentinel (mobile infinite scroll trigger) -->
+    <div #scrollSentinel id="scroll-sentinel"></div>
+
+    <!-- Load More Spinner (mobile) -->
+    <div class="load-more-spinner" *ngIf="isMobile && isLoadingMore">
+        <div class="spinner"></div>
+        <p>{{ 'PRODUCTS.loadingMore' | translate }}</p>
+    </div>
+
+    <!-- Pagination (desktop only) -->
+    <div class="pagination-controls" *ngIf="!isMobile && totalPages >= 0 && !isLoading && !errorMessage">
         <button class="btn-page" (click)="prevPage()" [disabled]="pageNumber === 0">{{ 'COMMON.prevPage' | translate }}</button>
         <span class="page-info">{{ 'COMMON.pagination' | translate: {current: pageNumber + 1, total: totalPages} }}</span>
         <button class="btn-page" (click)="nextPage()" [disabled]="pageNumber >= totalPages - 1">{{ 'COMMON.nextPage' | translate }}</button>
@@ -89,3 +104,5 @@
         </div>
     </div>
 </div>
+
+<app-auth-prompt [show]="showAuthPrompt" (close)="showAuthPrompt = false"></app-auth-prompt>

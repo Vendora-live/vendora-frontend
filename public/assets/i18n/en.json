@@ -58,7 +58,9 @@
       "analytics": "Analytics",
       "reviews": "Reviews",
       "shipments": "Shipments",
-      "refunds": "Refund Requests"
+      "refunds": "Refund Requests",
+      "coupons": "Coupons",
+      "questions": "Customer Questions"
     }
   },
   "IND": {
@@ -74,6 +76,7 @@
       "profile": "Profile Settings",
       "addresses": "My Addresses",
       "myRefunds": "My Refunds",
+      "myWishlist": "My Wishlist",
       "becomeCorporate": "Become Corporate"
     }
   },
@@ -166,7 +169,8 @@
       "reset": "Reset Password →",
       "goSignIn": "Go to Sign In →",
       "backSignIn": "Back to Sign In"
-    }
+    },
+    "backToProducts": "← Browse Products"
   },
   "COOKIE": {
     "title": "Cookie Policy",
@@ -198,7 +202,8 @@
     "inStockLabel": "In Stock",
     "inStockCount": "{{count}} in stock",
     "general": "General",
-    "recentlyViewed": "Recently Viewed"
+    "recentlyViewed": "Recently Viewed",
+    "loadingMore": "Loading more products..."
   },
   "CART": {
     "title": "My Shopping Cart",
@@ -220,7 +225,12 @@
     "noAddress": "You have no saved addresses. You must add a delivery address to complete the order.",
     "addAddress": "Add Address",
     "proceedPayment": "💳 Proceed to Payment",
-    "processing": "Processing..."
+    "processing": "Processing...",
+    "couponCode": "Coupon code",
+    "applyCoupon": "Apply",
+    "couponApplied": "Coupon applied",
+    "removeCoupon": "Remove coupon",
+    "discount": "Discount"
   },
   "ORDERS": {
     "title": "My Orders",
@@ -405,6 +415,19 @@
     "sameDay": "Same-Day Delivery",
     "confirmShipment": "Confirm Shipment"
   },
+  "MY_WISHLIST": {
+    "title": "My Wishlist",
+    "subtitle": "Your saved products and favorites.",
+    "loading": "Loading wishlist...",
+    "noItems": "Wishlist is Empty",
+    "noItemsDesc": "Save products you love and find them here later.",
+    "browseProducts": "Browse Products",
+    "removeItem": "Remove",
+    "addToCart": "Add to Cart",
+    "addedToWishlist": "Added to wishlist",
+    "removedFromWishlist": "Removed from wishlist",
+    "alreadyInWishlist": "Already in wishlist"
+  },
   "MY_REFUNDS": {
     "title": "My Refund Requests",
     "subtitle": "Track the status of your return and refund requests.",
@@ -458,5 +481,51 @@
     "storeName": "Store Name",
     "noOrders": "No orders yet.",
     "noStoreData": "No store data found."
+  },
+  "COUPONS": {
+    "title": "Coupons",
+    "subtitle": "Create and manage discount codes for your store.",
+    "create": "Create Coupon",
+    "createBtn": "Create Coupon",
+    "code": "Coupon Code",
+    "type": "Discount Type",
+    "percentage": "Percentage (%)",
+    "fixedAmount": "Fixed Amount (₺)",
+    "discountValue": "Discount Value",
+    "minOrder": "Min. Order Amount",
+    "expiry": "Expiry Date",
+    "usageLimit": "Usage Limit",
+    "usageCount": "Usage",
+    "noLimit": "Unlimited",
+    "noExpiry": "No Expiry",
+    "active": "Active",
+    "inactive": "Inactive",
+    "discount": "discount",
+    "deleteConfirm": "Are you sure you want to delete this coupon? This cannot be undone.",
+    "noData": "No coupons yet. Create your first discount code!"
+  },
+  "QUESTIONS": {
+    "title": "Questions & Answers",
+    "noQuestions": "No questions yet. Be the first to ask!",
+    "askQuestion": "Ask a Question",
+    "questionPlaceholder": "What would you like to know about this product?",
+    "submitQuestion": "Submit Question",
+    "pendingAnswer": "Awaiting seller response",
+    "answerLabel": "Seller Response",
+    "submitSuccess": "Your question has been submitted",
+    "submitError": "Failed to submit question"
+  },
+  "NOTIFICATIONS": {
+    "ORDER_STATUS_UPDATED": "Your order status has been updated",
+    "NEW_ORDER": "You have a new order!",
+    "REFUND_APPROVED": "Your refund request has been approved",
+    "REFUND_REJECTED": "Your refund request has been rejected"
+  },
+  "AUTH_PROMPT": {
+    "title": "Sign in to continue",
+    "subtitle": "You need an account to add items to cart, save to wishlist, ask questions, and more.",
+    "login": "Sign In",
+    "register": "Create Account",
+    "myPanel": "My Panel"
   }
 }

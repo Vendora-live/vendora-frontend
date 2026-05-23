@@ -2,6 +2,7 @@ import { Component, inject, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { CartService } from '../../../core/services/cart.service';
+import { CouponService } from '../../../core/services/coupon.service';
 import { ProductService } from '../../../core/services/product.service';
 import { ToastService } from '../../../core/services/toast.service';
 import { FormsModule } from '@angular/forms';
@@ -24,6 +25,7 @@ declare var Stripe: any;
 })
 export class IndCartComponent implements OnInit {
   cartService = inject(CartService);
+  private couponService = inject(CouponService);
   productService = inject(ProductService);
   toastService = inject(ToastService);
   orderService = inject(OrderService);
@@ -39,6 +41,10 @@ export class IndCartComponent implements OnInit {
   isLoadingAddresses = false;
 
   isProcessing = false;
+
+  // Coupon state
+  couponCode = '';
+  isApplyingCoupon = false;
 
   ngOnInit(): void {
     this.cartService.refreshMyCart().subscribe();
@@ -148,6 +154,39 @@ export class IndCartComponent implements OnInit {
             this.isProcessing = false;
           }
         });
+      }
+    });
+  }
+
+  applyCoupon(): void {
+    if (!this.couponCode.trim() || this.isApplyingCoupon) return;
+    this.isApplyingCoupon = true;
+    this.couponService.applyCoupon(this.couponCode.trim()).pipe(
+      catchError(err => {
+        this.toastService.showError(err.error?.exception?.message || 'Failed to apply coupon.');
+        this.isApplyingCoupon = false;
+        return of(null);
+      })
+    ).subscribe(cart => {
+      if (cart) {
+        this.cartService.updateLocalCart(cart);
+        this.couponCode = '';
+        this.toastService.showSuccess('Coupon applied successfully!');
+      }
+      this.isApplyingCoupon = false;
+    });
+  }
+
+  removeCoupon(): void {
+    this.couponService.removeCoupon().pipe(
+      catchError(() => {
+        this.toastService.showError('Failed to remove coupon.');
+        return of(null);
+      })
+    ).subscribe(cart => {
+      if (cart) {
+        this.cartService.updateLocalCart(cart);
+        this.toastService.showSuccess('Coupon removed.');
       }
     });
   }

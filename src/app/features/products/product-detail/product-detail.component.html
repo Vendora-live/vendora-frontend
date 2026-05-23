@@ -1,3 +1,5 @@
+<app-breadcrumb *ngIf="breadcrumbs.length > 0" [items]="breadcrumbs" />
+
 <div class="detail-wrapper">
     <!-- Loading -->
     @if (isLoading) {
@@ -67,6 +69,12 @@
                 <button class="add-to-cart-btn" (click)="addToCart(product.id)" [disabled]="product.stockQuantity === 0">
                     {{ 'PRODUCTS.addToCartBtn' | translate }}
                 </button>
+                <button *ngIf="isIndividual || !isAuthenticated" class="wishlist-detail-btn"
+                    [class.in-wishlist]="product.id && wishlistService.isInWishlist(product.id)"
+                    (click)="toggleWishlist()"
+                    title="Wishlist">
+                    {{ product.id && wishlistService.isInWishlist(product.id) ? '❤️' : '🤍' }}
+                </button>
             </div>
         </div>
     </div>
@@ -76,13 +84,60 @@
         <app-review-widget [productId]="product.id!" [allowWrite]="false"></app-review-widget>
     </div>
 
+    <!-- Questions & Answers -->
+    <div class="product-questions-section">
+        <h3 class="questions-title">{{ 'QUESTIONS.title' | translate }}</h3>
+
+        <div class="questions-list" *ngIf="questions.length > 0">
+            <div class="question-item" *ngFor="let q of questions">
+                <div class="question-row">
+                    <span class="q-icon">Q</span>
+                    <div class="q-content">
+                        <p class="q-text">{{ q.questionText }}</p>
+                        <span class="q-date">{{ q.createdAt | date:'mediumDate' }}</span>
+                    </div>
+                </div>
+                <div class="answer-row" *ngIf="q.answered && q.answerText">
+                    <span class="a-icon">A</span>
+                    <div class="a-content">
+                        <p class="a-text">{{ q.answerText }}</p>
+                        <span class="a-date">{{ q.answeredAt | date:'mediumDate' }}</span>
+                    </div>
+                </div>
+                <div class="answer-pending" *ngIf="!q.answered">
+                    <span class="pending-badge">{{ 'QUESTIONS.pendingAnswer' | translate }}</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="questions-empty" *ngIf="questions.length === 0">
+            <p>{{ 'QUESTIONS.noQuestions' | translate }}</p>
+        </div>
+
+        <div class="ask-form" *ngIf="isIndividual || !isAuthenticated">
+            <h4>{{ 'QUESTIONS.askQuestion' | translate }}</h4>
+            <textarea
+                class="ask-textarea"
+                [(ngModel)]="newQuestionText"
+                [placeholder]="'QUESTIONS.questionPlaceholder' | translate"
+                rows="3"
+                maxlength="500">
+            </textarea>
+            <button class="ask-btn"
+                (click)="submitQuestion()"
+                [disabled]="!newQuestionText.trim() || isSubmittingQuestion">
+                {{ 'QUESTIONS.submitQuestion' | translate }}
+            </button>
+        </div>
+    </div>
+
     <!-- Recently Viewed -->
     <div class="recently-viewed-section" *ngIf="recentlyViewed.length > 0">
         <h3 class="rv-title">{{ 'PRODUCTS.recentlyViewed' | translate }}</h3>
         <div class="rv-scroll-row">
             <a class="rv-card"
                *ngFor="let p of recentlyViewed"
-               [routerLink]="['/individual/products', p.id]">
+               [routerLink]="productRoute(p.id!)">
                 <div class="rv-img-wrap">
                     <img [src]="getImageUrl(p.primaryImageUrl)" [alt]="p.name">
                 </div>
@@ -95,3 +150,5 @@
     </div>
     }
 </div>
+
+<app-auth-prompt [show]="showAuthPrompt" (close)="showAuthPrompt = false"></app-auth-prompt>

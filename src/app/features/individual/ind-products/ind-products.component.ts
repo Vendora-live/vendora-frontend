@@ -1,30 +1,47 @@
-import { Component, OnInit, inject } from '@angular/core';
+import { Component, OnInit, OnDestroy, inject, ViewChild, ElementRef, AfterViewInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
+import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
+import { Subscription } from 'rxjs';
 import { ProductService } from '../../../core/services/product.service';
 import { Product } from '../../../shared/models/product';
-
 import { CartService } from '../../../core/services/cart.service';
+import { WishlistService } from '../../../core/services/wishlist.service';
+import { AuthService } from '../../../core/services/auth.service';
 import { ToastService } from '../../../core/services/toast.service';
 import { TranslateModule } from '@ngx-translate/core';
+import { AuthPromptComponent } from '../../../shared/components/auth-prompt/auth-prompt.component';
 
 @Component({
   selector: 'app-ind-products',
   standalone: true,
-  imports: [CommonModule, RouterLink, FormsModule, TranslateModule],
+  imports: [CommonModule, RouterLink, FormsModule, TranslateModule, AuthPromptComponent],
   templateUrl: './ind-products.component.html',
   styleUrl: './ind-products.component.css'
 })
-export class IndProductsComponent implements OnInit {
+export class IndProductsComponent implements OnInit, AfterViewInit, OnDestroy {
   private productService = inject(ProductService);
   private cartService = inject(CartService);
+  wishlistService = inject(WishlistService);
+  private authService = inject(AuthService);
   private toastService = inject(ToastService);
+  private breakpointObserver = inject(BreakpointObserver);
+
+  @ViewChild('scrollSentinel') scrollSentinel!: ElementRef;
+
+  isAuthenticated = this.authService.isAuthenticated();
+  isIndividual = this.authService.getRole() === 'INDIVIDUAL';
+  showAuthPrompt = false;
 
   products: Product[] = [];
   filteredProducts: Product[] = [];
   isLoading = true;
+  isLoadingMore = false;
   errorMessage = '';
+
+  isMobile = false;
+  hasMore = true;
 
   // Pagination
   pageNumber = 0;
@@ -37,8 +54,57 @@ export class IndProductsComponent implements OnInit {
   sortOption = 'DEFAULT';
   categories: string[] = [];
 
+  private scrollObserver: IntersectionObserver | null = null;
+  private breakpointSub!: Subscription;
+
   ngOnInit(): void {
+    this.breakpointSub = this.breakpointObserver
+      .observe(['(max-width: 767px)'])
+      .subscribe(result => {
+        this.isMobile = result.matches;
+      });
     this.fetchProducts();
+  }
+
+  ngAfterViewInit(): void {
+    this.setupScrollObserver();
+  }
+
+  ngOnDestroy(): void {
+    this.scrollObserver?.disconnect();
+    this.breakpointSub?.unsubscribe();
+  }
+
+  private setupScrollObserver(): void {
+    if (!this.scrollSentinel) return;
+    this.scrollObserver = new IntersectionObserver(entries => {
+      if (entries[0].isIntersecting && this.isMobile && this.hasMore && !this.isLoading && !this.isLoadingMore) {
+        this.loadNextPage();
+      }
+    }, { threshold: 0.1 });
+    this.scrollObserver.observe(this.scrollSentinel.nativeElement);
+  }
+
+  private loadNextPage(): void {
+    if (this.pageNumber >= this.totalPages - 1) {
+      this.hasMore = false;
+      return;
+    }
+    this.pageNumber++;
+    this.isLoadingMore = true;
+    this.productService.getProducts({ pageNumber: this.pageNumber, pageSize: this.pageSize }).subscribe({
+      next: (res) => {
+        const raw = res?.content || [];
+        this.products = [...this.products, ...raw];
+        this.totalPages = Math.ceil((res?.totalElement || 0) / this.pageSize);
+        this.hasMore = this.pageNumber < this.totalPages - 1;
+        this.applyFilters();
+        this.isLoadingMore = false;
+      },
+      error: () => {
+        this.isLoadingMore = false;
+      }
+    });
   }
 
   fetchProducts(): void {
@@ -52,7 +118,10 @@ export class IndProductsComponent implements OnInit {
         }
         this.products = raw;
         this.totalPages = Math.ceil((res?.totalElement || 0) / this.pageSize);
-        this.extractCategories();
+        this.hasMore = this.pageNumber < this.totalPages - 1;
+        if (this.pageNumber === 0) {
+          this.extractCategories();
+        }
         this.applyFilters();
         this.isLoading = false;
       },
@@ -62,6 +131,13 @@ export class IndProductsComponent implements OnInit {
         this.isLoading = false;
       }
     });
+  }
+
+  private resetAndReload(): void {
+    this.pageNumber = 0;
+    this.products = [];
+    this.hasMore = true;
+    this.fetchProducts();
   }
 
   prevPage(): void {
@@ -89,8 +165,8 @@ export class IndProductsComponent implements OnInit {
     // Search
     if (this.searchTerm.trim()) {
       const term = this.searchTerm.toLowerCase();
-      result = result.filter(p => 
-        p.name.toLowerCase().includes(term) || 
+      result = result.filter(p =>
+        p.name.toLowerCase().includes(term) ||
         (p.description && p.description.toLowerCase().includes(term))
       );
     }
@@ -119,13 +195,42 @@ export class IndProductsComponent implements OnInit {
     this.filteredProducts = result;
   }
 
+  onFilterChange(): void {
+    if (this.isMobile) {
+      this.resetAndReload();
+    } else {
+      this.applyFilters();
+    }
+  }
+
+  productDetailLink(productId: number): any[] {
+    return this.isIndividual ? ['/individual/products', productId] : ['/products', productId];
+  }
+
   addToCart(product: Product): void {
+    if (!this.isAuthenticated) { this.showAuthPrompt = true; return; }
     if (!product.id) return;
     this.cartService.addItemToCart({ productId: product.id, quantity: 1 }).subscribe({
         next: () => {
             this.toastService.showSuccess(`🛒 ${product.name} added to cart!`);
         }
     });
+  }
+
+  toggleWishlist(product: Product): void {
+    if (!this.isAuthenticated) { this.showAuthPrompt = true; return; }
+    if (!product.id) return;
+    if (this.wishlistService.isInWishlist(product.id)) {
+      this.wishlistService.removeFromWishlistByProductId(product.id).subscribe({
+        next: () => this.toastService.showSuccess(`Removed from wishlist`),
+        error: () => this.toastService.showError('Failed to update wishlist')
+      });
+    } else {
+      this.wishlistService.addToWishlist(product.id).subscribe({
+        next: () => this.toastService.showSuccess(`❤️ Added to wishlist`),
+        error: () => this.toastService.showError('Failed to update wishlist')
+      });
+    }
   }
 
   getImageUrl(product: Product): string {

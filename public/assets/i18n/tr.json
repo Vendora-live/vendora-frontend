@@ -58,7 +58,9 @@
       "analytics": "Analitik",
       "reviews": "Yorumlar",
       "shipments": "Kargolar",
-      "refunds": "İade Talepleri"
+      "refunds": "İade Talepleri",
+      "coupons": "Kuponlar",
+      "questions": "Müşteri Soruları"
     }
   },
   "IND": {
@@ -71,6 +73,7 @@
       "purchaseHistory": "Satın Alma Geçmişi",
       "myReviews": "Yorumlarım",
       "myRefunds": "İadelerim",
+      "myWishlist": "Favorilerim",
       "analytics": "Harcama Analitikleri",
       "profile": "Profil Ayarları",
       "addresses": "Adreslerim",
@@ -166,7 +169,8 @@
       "reset": "Şifremi Sıfırla →",
       "goSignIn": "Giriş Yap'a Git →",
       "backSignIn": "Giriş Yap'a Dön"
-    }
+    },
+    "backToProducts": "← Ürünlere Dön"
   },
   "COOKIE": {
     "title": "Çerez Politikası",
@@ -198,7 +202,8 @@
     "inStockLabel": "Stokta Var",
     "inStockCount": "{{count}} stokta",
     "general": "Genel",
-    "recentlyViewed": "Son Baktıklarım"
+    "recentlyViewed": "Son Baktıklarım",
+    "loadingMore": "Daha fazla ürün yükleniyor..."
   },
   "CART": {
     "title": "Alışveriş Sepetim",
@@ -220,7 +225,12 @@
     "noAddress": "Kayıtlı adresiniz yok. Siparişi tamamlamak için bir teslimat adresi eklemelisiniz.",
     "addAddress": "Adres Ekle",
     "proceedPayment": "💳 Ödemeye Geç",
-    "processing": "İşleniyor..."
+    "processing": "İşleniyor...",
+    "couponCode": "Kupon kodu",
+    "applyCoupon": "Uygula",
+    "couponApplied": "Kupon uygulandı",
+    "removeCoupon": "Kuponu kaldır",
+    "discount": "İndirim"
   },
   "ORDERS": {
     "title": "Siparişlerim",
@@ -403,6 +413,19 @@
     "sameDay": "Aynı Gün Teslimat",
     "confirmShipment": "Kargoyu Onayla"
   },
+  "MY_WISHLIST": {
+    "title": "Favorilerim",
+    "subtitle": "Kaydettiğiniz ürünler burada görünür.",
+    "loading": "Favoriler yükleniyor...",
+    "noItems": "Favori Listeniz Boş",
+    "noItemsDesc": "Beğendiğiniz ürünleri favorilere ekleyin, hep burada olsun.",
+    "browseProducts": "Ürünlere Göz At",
+    "removeItem": "Kaldır",
+    "addToCart": "Sepete Ekle",
+    "addedToWishlist": "Favorilere eklendi",
+    "removedFromWishlist": "Favorilerden kaldırıldı",
+    "alreadyInWishlist": "Zaten favorilerde"
+  },
   "MY_REFUNDS": {
     "title": "İade Taleplerim",
     "subtitle": "İade ve geri ödeme taleplerinizin durumunu takip edin.",
@@ -456,5 +479,51 @@
     "storeName": "Mağaza Adı",
     "noOrders": "Henüz sipariş yok.",
     "noStoreData": "Mağaza verisi bulunamadı."
+  },
+  "COUPONS": {
+    "title": "Kuponlar",
+    "subtitle": "Mağazanız için indirim kodları oluşturun ve yönetin.",
+    "create": "Kupon Oluştur",
+    "createBtn": "Kupon Oluştur",
+    "code": "Kupon Kodu",
+    "type": "İndirim Türü",
+    "percentage": "Yüzde (%)",
+    "fixedAmount": "Sabit Tutar (₺)",
+    "discountValue": "İndirim Değeri",
+    "minOrder": "Min. Sipariş Tutarı",
+    "expiry": "Son Kullanma Tarihi",
+    "usageLimit": "Kullanım Limiti",
+    "usageCount": "Kullanım",
+    "noLimit": "Sınırsız",
+    "noExpiry": "Süresiz",
+    "active": "Aktif",
+    "inactive": "Pasif",
+    "discount": "indirim",
+    "deleteConfirm": "Bu kuponu silmek istediğinizden emin misiniz? Bu işlem geri alınamaz.",
+    "noData": "Henüz kupon yok. İlk indirim kodunuzu oluşturun!"
+  },
+  "QUESTIONS": {
+    "title": "Sorular & Cevaplar",
+    "noQuestions": "Henüz soru yok. İlk soruyu soran siz olun!",
+    "askQuestion": "Soru Sor",
+    "questionPlaceholder": "Bu ürün hakkında ne bilmek istersiniz?",
+    "submitQuestion": "Soruyu Gönder",
+    "pendingAnswer": "Satıcı yanıtı bekleniyor",
+    "answerLabel": "Satıcı Yanıtı",
+    "submitSuccess": "Sorunuz gönderildi",
+    "submitError": "Soru gönderilemedi"
+  },
+  "NOTIFICATIONS": {
+    "ORDER_STATUS_UPDATED": "Sipariş durumunuz güncellendi",
+    "NEW_ORDER": "Yeni bir sipariş aldınız!",
+    "REFUND_APPROVED": "İade talebiniz onaylandı",
+    "REFUND_REJECTED": "İade talebiniz reddedildi"
+  },
+  "AUTH_PROMPT": {
+    "title": "Devam etmek için giriş yapın",
+    "subtitle": "Sepete eklemek, favorilere kaydetmek, soru sormak ve daha fazlası için hesabınızla giriş yapmanız gerekiyor.",
+    "login": "Giriş Yap",
+    "register": "Hesap Oluştur",
+    "myPanel": "Panelim"
   }
 }

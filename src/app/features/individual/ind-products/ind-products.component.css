@@ -148,6 +148,34 @@
     background-color: var(--surface-bg);
     padding: 1rem;
     border-bottom: 1px solid var(--border-color);
+
+}
+
+.wishlist-btn {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    background: rgba(255,255,255,0.85);
+    border: none;
+    border-radius: 50%;
+    width: 34px;
+    height: 34px;
+    font-size: 1rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.15s, background 0.15s;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.15);
+}
+
+.wishlist-btn:hover {
+    transform: scale(1.15);
+    background: rgba(255,255,255,1);
+}
+
+.wishlist-btn.in-wishlist {
+    background: rgba(255, 220, 220, 0.95);
 }
 
 .badge {
@@ -274,6 +302,20 @@
 
 @media (max-width: 380px) {
     .product-grid { grid-template-columns: 1fr; }
+}
+
+/* Infinite scroll */
+#scroll-sentinel {
+    height: 1px;
+}
+
+.load-more-spinner {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+    color: var(--text-secondary);
+    font-size: 0.9rem;
 }
 
 /* ── Skeleton ── */

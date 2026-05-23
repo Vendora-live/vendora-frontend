@@ -531,8 +531,21 @@
 /* ── Language Toggle ── */
 .auth-lang-toggle {
   display: flex;
-  justify-content: flex-end;
+  justify-content: space-between;
+  align-items: center;
   margin-bottom: 8px;
+}
+
+.auth-back-link {
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: var(--text-muted, #94a3b8);
+  text-decoration: none;
+  transition: color 0.15s;
+}
+
+.auth-back-link:hover {
+  color: var(--text-primary);
 }
 
 .lang-toggle-btn {

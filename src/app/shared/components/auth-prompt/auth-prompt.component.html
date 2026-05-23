@@ -1,0 +1,12 @@
+<div class="auth-overlay" *ngIf="show" (click)="close.emit()">
+    <div class="auth-modal" (click)="$event.stopPropagation()">
+        <button class="modal-close" (click)="close.emit()">✕</button>
+        <div class="modal-icon">🔒</div>
+        <h3 class="modal-title">{{ 'AUTH_PROMPT.title' | translate }}</h3>
+        <p class="modal-subtitle">{{ 'AUTH_PROMPT.subtitle' | translate }}</p>
+        <div class="modal-actions">
+            <button class="btn-login" (click)="goToLogin()">{{ 'AUTH_PROMPT.login' | translate }}</button>
+            <button class="btn-register" (click)="goToRegister()">{{ 'AUTH_PROMPT.register' | translate }}</button>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,62 @@
+<app-breadcrumb [items]="breadcrumbs" />
+
+<div class="wishlist-container">
+
+  <div class="page-header">
+    <h2>{{ 'MY_WISHLIST.title' | translate }}</h2>
+    <p class="subtitle">{{ 'MY_WISHLIST.subtitle' | translate }}</p>
+  </div>
+
+  <div class="loader" *ngIf="isLoading">
+    <div class="spinner"></div>
+    <p>{{ 'MY_WISHLIST.loading' | translate }}</p>
+  </div>
+
+  <ng-container *ngIf="!isLoading">
+
+    <div class="empty-state" *ngIf="items.length === 0">
+      <div class="empty-icon">❤️</div>
+      <h3>{{ 'MY_WISHLIST.noItems' | translate }}</h3>
+      <p>{{ 'MY_WISHLIST.noItemsDesc' | translate }}</p>
+      <a routerLink="/individual/products" class="browse-btn">{{ 'MY_WISHLIST.browseProducts' | translate }}</a>
+    </div>
+
+    <div class="wishlist-grid" *ngIf="items.length > 0">
+      <div class="wishlist-card" *ngFor="let item of items" [routerLink]="['/individual/products', item.productId]" style="cursor:pointer">
+
+        <div class="card-image" [style.backgroundImage]="'url(' + getImageUrl(item.primaryImageUrl) + ')'">
+          <div class="out-badge" *ngIf="item.stockQuantity === 0">{{ 'PRODUCTS.outOfStock' | translate }}</div>
+          <button class="remove-btn"
+            (click)="removeItem(item); $event.stopPropagation()"
+            [disabled]="removingId === item.id"
+            [title]="'MY_WISHLIST.removeItem' | translate">
+            🗑️
+          </button>
+        </div>
+
+        <div class="card-body">
+          <div class="card-category">{{ item.categoryName }}</div>
+          <h3 class="card-title">{{ item.productName }}</h3>
+          <p class="card-store">{{ item.storeName }}</p>
+
+          <div class="card-footer">
+            <span class="price">₺{{ item.unitPrice | number:'1.2-2' }}</span>
+            <button class="cart-btn"
+              [disabled]="item.stockQuantity === 0"
+              (click)="addToCart(item); $event.stopPropagation()">
+              🛒 {{ 'MY_WISHLIST.addToCart' | translate }}
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="pagination" *ngIf="totalPages > 1">
+      <button (click)="prevPage()" [disabled]="pageNumber === 0">{{ 'COMMON.prevPage' | translate }}</button>
+      <span>{{ 'COMMON.pagination' | translate: { current: pageNumber + 1, total: totalPages } }}</span>
+      <button (click)="nextPage()" [disabled]="pageNumber >= totalPages - 1">{{ 'COMMON.nextPage' | translate }}</button>
+    </div>
+
+  </ng-container>
+
+</div>

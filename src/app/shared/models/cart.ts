@@ -27,4 +27,7 @@ export interface DtoCart {
     items: DtoCartItem[];
     totalPrice: number;
     totalItems: number;
+    appliedCouponCode?: string;
+    discountAmount?: number;
+    finalTotal?: number;
 }

@@ -49,6 +49,14 @@
         <span class="nav-icon">↩️</span>
         <span class="nav-label">{{ 'CORP.nav.refunds' | translate }}</span>
       </a>
+      <a routerLink="/corporate/coupons" routerLinkActive="active" (click)="closeSidebar()">
+        <span class="nav-icon">🎟️</span>
+        <span class="nav-label">{{ 'CORP.nav.coupons' | translate }}</span>
+      </a>
+      <a routerLink="/corporate/questions" routerLinkActive="active" (click)="closeSidebar()">
+        <span class="nav-icon">💬</span>
+        <span class="nav-label">{{ 'CORP.nav.questions' | translate }}</span>
+      </a>
     </nav>
 
     <div class="sidebar-footer">
@@ -91,4 +99,9 @@
     </div>
 
   </main>
+
+  <div *ngIf="toastMessage" class="toast-notification" [ngClass]="toastMessage.type">
+    {{ toastMessage.message }}
+  </div>
+
 </div>

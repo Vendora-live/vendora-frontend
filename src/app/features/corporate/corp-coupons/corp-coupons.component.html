@@ -1,0 +1,139 @@
+<div class="coupons-container">
+  <div class="page-header">
+    <div>
+      <h2>{{ 'COUPONS.title' | translate }}</h2>
+      <p>{{ 'COUPONS.subtitle' | translate }}</p>
+    </div>
+    <button class="create-btn" (click)="openCreateForm()">
+      + {{ 'COUPONS.createBtn' | translate }}
+    </button>
+  </div>
+
+  <!-- Loading -->
+  <div class="loader" *ngIf="isLoading">
+    <div class="spinner"></div>
+  </div>
+
+  <!-- Empty -->
+  <div class="empty-state" *ngIf="!isLoading && coupons.length === 0">
+    <div class="empty-icon">🎟️</div>
+    <p>{{ 'COUPONS.noData' | translate }}</p>
+    <button class="create-btn" (click)="openCreateForm()">{{ 'COUPONS.createBtn' | translate }}</button>
+  </div>
+
+  <!-- Coupon Grid -->
+  <div class="coupon-grid" *ngIf="!isLoading && coupons.length > 0">
+    <div class="coupon-card" *ngFor="let coupon of coupons" [class.inactive]="!coupon.active">
+      <div class="coupon-card-header">
+        <span class="coupon-code">{{ coupon.code }}</span>
+        <span class="type-badge" [class.percentage]="coupon.type === 'PERCENTAGE'" [class.fixed]="coupon.type === 'FIXED_AMOUNT'">
+          {{ coupon.type === 'PERCENTAGE' ? ('COUPONS.percentage' | translate) : ('COUPONS.fixedAmount' | translate) }}
+        </span>
+      </div>
+
+      <div class="coupon-value">
+        <span *ngIf="coupon.type === 'PERCENTAGE'">{{ coupon.discountValue }}%</span>
+        <span *ngIf="coupon.type === 'FIXED_AMOUNT'">₺{{ coupon.discountValue }}</span>
+        <span class="discount-label">{{ 'COUPONS.discount' | translate }}</span>
+      </div>
+
+      <div class="coupon-details">
+        <div class="detail-row" *ngIf="coupon.minOrderAmount > 0">
+          <span class="detail-label">{{ 'COUPONS.minOrder' | translate }}</span>
+          <span>₺{{ coupon.minOrderAmount }}</span>
+        </div>
+        <div class="detail-row">
+          <span class="detail-label">{{ 'COUPONS.usageCount' | translate }}</span>
+          <span>{{ coupon.usageCount }}{{ coupon.usageLimit ? ' / ' + coupon.usageLimit : ' (' + ('COUPONS.noLimit' | translate) + ')' }}</span>
+        </div>
+        <div class="detail-row" *ngIf="coupon.expiryDate">
+          <span class="detail-label">{{ 'COUPONS.expiry' | translate }}</span>
+          <span>{{ coupon.expiryDate | date:'mediumDate' }}</span>
+        </div>
+        <div class="detail-row" *ngIf="!coupon.expiryDate">
+          <span class="detail-label">{{ 'COUPONS.expiry' | translate }}</span>
+          <span>{{ 'COUPONS.noExpiry' | translate }}</span>
+        </div>
+      </div>
+
+      <div class="coupon-footer">
+        <span class="status-badge" [class.active]="coupon.active" [class.inactive-badge]="!coupon.active">
+          {{ coupon.active ? ('COUPONS.active' | translate) : ('COUPONS.inactive' | translate) }}
+        </span>
+        <button class="delete-btn" (click)="confirmDelete(coupon.id!)">{{ 'COMMON.delete' | translate }}</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Pagination -->
+  <div class="pagination-controls" *ngIf="totalPages > 1">
+    <button class="btn-page" (click)="prevPage()" [disabled]="pageNumber === 0">{{ 'COMMON.prevPage' | translate }}</button>
+    <span>{{ 'COMMON.pagination' | translate: {current: pageNumber + 1, total: totalPages} }}</span>
+    <button class="btn-page" (click)="nextPage()" [disabled]="pageNumber >= totalPages - 1">{{ 'COMMON.nextPage' | translate }}</button>
+  </div>
+</div>
+
+<!-- Create Coupon Modal -->
+<div class="modal-overlay" *ngIf="showCreateForm" (click)="closeCreateForm()">
+  <div class="modal-content" (click)="$event.stopPropagation()">
+    <div class="modal-header">
+      <h3>{{ 'COUPONS.create' | translate }}</h3>
+      <button class="close-btn" (click)="closeCreateForm()">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="form-group">
+        <label>{{ 'COUPONS.code' | translate }}</label>
+        <input type="text" [(ngModel)]="form.code" [placeholder]="'COUPONS.code' | translate" style="text-transform:uppercase">
+      </div>
+      <div class="form-group">
+        <label>{{ 'COUPONS.type' | translate }}</label>
+        <select [(ngModel)]="form.type">
+          <option value="PERCENTAGE">{{ 'COUPONS.percentage' | translate }}</option>
+          <option value="FIXED_AMOUNT">{{ 'COUPONS.fixedAmount' | translate }}</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>{{ 'COUPONS.discountValue' | translate }}</label>
+        <input type="number" [(ngModel)]="form.discountValue" min="0.01" step="0.01">
+      </div>
+      <div class="form-group">
+        <label>{{ 'COUPONS.minOrder' | translate }}</label>
+        <input type="number" [(ngModel)]="form.minOrderAmount" min="0" step="0.01">
+      </div>
+      <div class="form-group">
+        <label>{{ 'COUPONS.usageLimit' | translate }}</label>
+        <input type="number" [(ngModel)]="form.usageLimit" min="1" [placeholder]="'COUPONS.noLimit' | translate">
+      </div>
+      <div class="form-group">
+        <label>{{ 'COUPONS.expiry' | translate }}</label>
+        <input type="datetime-local" [(ngModel)]="form.expiryDate">
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn-cancel" (click)="closeCreateForm()" [disabled]="isSubmitting">{{ 'COMMON.cancel' | translate }}</button>
+      <button class="btn-submit" (click)="submitCreate()"
+              [disabled]="isSubmitting || !form.code || !form.discountValue">
+        {{ isSubmitting ? ('COMMON.saving' | translate) : ('COUPONS.create' | translate) }}
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- Delete Confirm Modal -->
+<div class="modal-overlay" *ngIf="showDeleteModal" (click)="cancelDelete()">
+  <div class="modal-content" (click)="$event.stopPropagation()">
+    <div class="modal-header">
+      <h3>{{ 'COMMON.confirm' | translate }}</h3>
+      <button class="close-btn" (click)="cancelDelete()">✕</button>
+    </div>
+    <div class="modal-body">
+      <p>{{ 'COUPONS.deleteConfirm' | translate }}</p>
+    </div>
+    <div class="modal-footer">
+      <button class="btn-cancel" (click)="cancelDelete()" [disabled]="isDeleting">{{ 'COMMON.cancel' | translate }}</button>
+      <button class="btn-danger" (click)="executeDelete()" [disabled]="isDeleting">
+        {{ isDeleting ? ('COMMON.deleting' | translate) : ('COMMON.delete' | translate) }}
+      </button>
+    </div>
+  </div>
+</div>

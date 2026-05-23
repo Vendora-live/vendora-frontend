@@ -39,8 +39,8 @@
       <span class="auth-mobile-brand-name">Vendora</span>
     </a>
 
-    <!-- Language Toggle (auth pages) -->
     <div class="auth-lang-toggle">
+      <a routerLink="/products" class="auth-back-link">{{ 'AUTH.backToProducts' | translate }}</a>
       <button class="lang-toggle-btn" (click)="langService.setLanguage(langService.currentLang() === 'tr' ? 'en' : 'tr')">
         {{ langService.currentLang() === 'tr' ? 'EN' : 'TR' }}
       </button>

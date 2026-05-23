@@ -25,12 +25,11 @@ export class NavbarComponent {
         this.authService.logout().subscribe({
             next: () => {
                 this.authService.clearStorage();
-                this.router.navigate(['/login']);
+                this.router.navigate(['/products']);
             },
             error: () => {
-                // Sunucu hatası olsa bile local'i temizle ve login'e yönlendir
                 this.authService.clearStorage();
-                this.router.navigate(['/login']);
+                this.router.navigate(['/products']);
             }
         });
     }

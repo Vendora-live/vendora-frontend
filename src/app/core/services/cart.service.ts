@@ -76,6 +76,11 @@ export class CartService {
     );
   }
 
+  /** Directly update local cart state (used after coupon apply/remove) */
+  updateLocalCart(cart: DtoCart): void {
+    this.currentCartSubject.next(cart);
+  }
+
   // --- Admin Endpoints ---
 
   findAllCarts(request?: RestPageableRequest): Observable<ApiResponse<RestPageableEntity<DtoCart>>> {

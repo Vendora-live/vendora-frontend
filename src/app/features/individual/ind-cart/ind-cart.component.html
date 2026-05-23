@@ -35,9 +35,33 @@
         <span>{{ 'CART.subtotal' | translate }}</span>
         <span>{{ cart.totalPrice | currency:'TRY':'₺' }}</span>
       </div>
+
+      <!-- Coupon Section -->
+      <div class="coupon-section" *ngIf="!cart.appliedCouponCode">
+        <div class="coupon-input-row">
+          <input class="coupon-input" type="text" [(ngModel)]="couponCode"
+                 [placeholder]="'CART.couponCode' | translate"
+                 (keyup.enter)="applyCoupon()" />
+          <button class="coupon-apply-btn" (click)="applyCoupon()"
+                  [disabled]="!couponCode.trim() || isApplyingCoupon">
+            {{ isApplyingCoupon ? ('COMMON.processing' | translate) : ('CART.applyCoupon' | translate) }}
+          </button>
+        </div>
+      </div>
+
+      <div class="coupon-applied" *ngIf="cart.appliedCouponCode">
+        <span class="coupon-tag">🎟️ {{ cart.appliedCouponCode }}</span>
+        <button class="coupon-remove-btn" (click)="removeCoupon()" title="{{ 'CART.removeCoupon' | translate }}">✕</button>
+      </div>
+
+      <div class="summary-line discount" *ngIf="cart.discountAmount && cart.discountAmount > 0">
+        <span>{{ 'CART.discount' | translate }}</span>
+        <span class="discount-value">-{{ cart.discountAmount | currency:'TRY':'₺' }}</span>
+      </div>
+
       <div class="summary-line total">
         <span>{{ 'CART.total' | translate }}</span>
-        <span>{{ cart.totalPrice | currency:'TRY':'₺' }}</span>
+        <span>{{ (cart.finalTotal ?? cart.totalPrice) | currency:'TRY':'₺' }}</span>
       </div>
 
       <div class="summary-actions">

@@ -14,12 +14,13 @@ import { catchError } from 'rxjs/operators';
 import { of } from 'rxjs';
 import { FormsModule } from '@angular/forms';
 import { ReviewWidgetComponent } from '../../../shared/components/review-widget/review-widget.component';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
+import { BreadcrumbComponent, BreadcrumbItem } from '../../../shared/components/breadcrumb/breadcrumb.component';
 
 @Component({
   selector: 'app-ind-order-detail',
   standalone: true,
-  imports: [CommonModule, RouterLink, FormsModule, ReviewWidgetComponent, TranslateModule],
+  imports: [CommonModule, RouterLink, FormsModule, ReviewWidgetComponent, TranslateModule, BreadcrumbComponent],
   templateUrl: './ind-order-detail.component.html',
   styleUrl: './ind-order-detail.component.css'
 })
@@ -31,9 +32,11 @@ export class IndOrderDetailComponent implements OnInit {
   private refundService = inject(RefundService);
   private toastService = inject(ToastService);
   private productService = inject(ProductService);
+  private translate = inject(TranslateService);
 
   order: DtoOrder | null = null;
   isLoading = true;
+  breadcrumbs: BreadcrumbItem[] = [];
   shipmentsMap: Record<number, DtoShipment | null> = {};
   productImagesMap: Record<number, string> = {};
 
@@ -85,6 +88,10 @@ export class IndOrderDetailComponent implements OnInit {
     ).subscribe(order => {
       this.order = order;
       if (order) {
+        this.breadcrumbs = [
+          { label: this.translate.instant('IND.nav.activeOrders'), route: ['/individual/orders'] },
+          { label: this.translate.instant('ORDER_DETAIL.orderNumber', { id: order.id }) }
+        ];
         if (order.items) {
           this.populateImageMap(order.items);
         }

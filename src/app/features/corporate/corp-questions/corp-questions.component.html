@@ -1,0 +1,74 @@
+<div class="questions-container">
+
+  <div class="questions-header">
+    <div class="header-content">
+      <h2>Customer Questions</h2>
+      <p class="header-sub">Answer questions from customers about your products.</p>
+    </div>
+    <div class="filter-tabs">
+      <button class="tab-btn" [class.active]="showPendingOnly" (click)="setFilter(true)">
+        Pending
+      </button>
+      <button class="tab-btn" [class.active]="!showPendingOnly" (click)="setFilter(false)">
+        All Questions
+      </button>
+    </div>
+  </div>
+
+  <div class="loader" *ngIf="isLoading">
+    <div class="spinner"></div>
+    <p>Loading questions...</p>
+  </div>
+
+  <div class="questions-list" *ngIf="!isLoading && questions.length > 0">
+    <div class="question-card" *ngFor="let q of questions">
+
+      <div class="card-meta">
+        <span class="product-name">{{ q.productName }}</span>
+        <span class="question-date">{{ q.createdAt | date:'mediumDate' }}</span>
+      </div>
+
+      <div class="question-row">
+        <span class="q-badge">Q</span>
+        <p class="q-text">{{ q.questionText }}</p>
+      </div>
+
+      <div class="answer-row" *ngIf="q.answered && q.answerText">
+        <span class="a-badge">A</span>
+        <div class="a-body">
+          <p class="a-text">{{ q.answerText }}</p>
+          <span class="a-date">Answered {{ q.answeredAt | date:'mediumDate' }}</span>
+        </div>
+      </div>
+
+      <div class="answer-form" *ngIf="!q.answered">
+        <textarea
+          class="answer-textarea"
+          [(ngModel)]="answerTexts[q.id!]"
+          placeholder="Write your answer..."
+          rows="3"
+          maxlength="1000">
+        </textarea>
+        <button class="answer-btn"
+          (click)="submitAnswer(q.id!)"
+          [disabled]="!(answerTexts[q.id!] || '').trim() || submittingId === q.id">
+          {{ submittingId === q.id ? 'Submitting...' : 'Submit Answer' }}
+        </button>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="pagination-controls" *ngIf="totalPages > 1 && !isLoading">
+    <button class="btn-page" (click)="prevPage()" [disabled]="pageNumber === 0">← Previous</button>
+    <span class="page-info">Page {{ pageNumber + 1 }} of {{ totalPages }}</span>
+    <button class="btn-page" (click)="nextPage()" [disabled]="pageNumber >= totalPages - 1">Next →</button>
+  </div>
+
+  <div class="empty-state" *ngIf="!isLoading && questions.length === 0">
+    <div class="empty-icon">💬</div>
+    <h3>{{ showPendingOnly ? 'No pending questions' : 'No questions yet' }}</h3>
+    <p>{{ showPendingOnly ? 'All customer questions have been answered.' : 'When customers ask about your products, questions will appear here.' }}</p>
+  </div>
+
+</div>
